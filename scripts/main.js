@@ -1,11 +1,12 @@
 // Frontstage renderer powered by localStorage; seeds prototype data on first load.
 const STORAGE_KEY = 'cvData';
 const THEME_KEY = 'cvTheme';
-const THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest', 'purple'];
+const THEMES = ['dark', 'light', 'tech', 'ocean', 'sunset', 'forest', 'purple'];
 const THEME_LABELS = {
   dark: '深色',
   light: '亮色',
   ocean: '冷光',
+  tech: '科技',
   sunset: '暖霞',
   forest: '松霧',
   purple: '紫夢'
@@ -247,6 +248,75 @@ function renderContact(data) {
   `;
 }
 
+function setupContactForm() {
+  const modal = document.getElementById('contact-modal');
+  const btn = document.getElementById('contact-btn-hero');
+  const closeBtn = document.getElementById('modal-close');
+  const overlay = document.getElementById('modal-overlay');
+  const form = document.getElementById('contact-form');
+  
+  if (!modal || !btn || !form) return;
+  
+  // Open modal
+  btn.addEventListener('click', () => {
+    modal.classList.add('active');
+  });
+  
+  // Close modal
+  const closeModal = () => {
+    modal.classList.remove('active');
+    form.reset();
+  };
+  
+  closeBtn?.addEventListener('click', closeModal);
+  overlay?.addEventListener('click', closeModal);
+  
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+  
+  // Handle form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    
+    if (!name || !email || !message) {
+      alert('請填寫所有欄位');
+      return;
+    }
+    
+    // Save message to localStorage
+    const messages = JSON.parse(localStorage.getItem('cvMessages') || '[]');
+    messages.push({
+      id: crypto.randomUUID(),
+      name,
+      email,
+      message,
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('cvMessages', JSON.stringify(messages));
+    
+    // Show success message
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = '已送出！';
+    submitBtn.style.background = 'var(--accent-2)';
+    
+    // Close modal after 1.5 seconds
+    setTimeout(() => {
+      closeModal();
+      submitBtn.textContent = originalText;
+      submitBtn.style.background = '';
+    }, 1500);
+  });
+}
+
 function renderAll() {
   const data = loadData();
   renderProfile(data);
@@ -297,6 +367,7 @@ function setupThemeToggle() {
 function bootstrapFront() {
   renderAll();
   setupThemeToggle();
+  setupContactForm();
 }
 
 bootstrapFront();
