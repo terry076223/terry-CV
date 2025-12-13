@@ -1,5 +1,15 @@
 // Frontstage renderer powered by localStorage; seeds prototype data on first load.
 const STORAGE_KEY = 'cvData';
+const THEME_KEY = 'cvTheme';
+const THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest', 'purple'];
+const THEME_LABELS = {
+  dark: '深色',
+  light: '亮色',
+  ocean: '冷光',
+  sunset: '暖霞',
+  forest: '松霧',
+  purple: '紫夢'
+};
 
 const defaultData = {
   profile: {
@@ -249,4 +259,44 @@ function renderAll() {
   renderContact(data);
 }
 
-renderAll();
+function applyTheme(theme) {
+  const body = document.body;
+  const current = localStorage.getItem(THEME_KEY) || 'dark';
+  const next = theme && THEMES.includes(theme) ? theme : current;
+  
+  // Remove all theme classes
+  THEMES.forEach(t => {
+    if (t !== 'dark') body.classList.remove(`theme-${t}`);
+  });
+  
+  // Apply new theme
+  if (next !== 'dark') {
+    body.classList.add(`theme-${next}`);
+  }
+  
+  localStorage.setItem(THEME_KEY, next);
+  
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = `主題：${THEME_LABELS[next]}`;
+}
+
+function setupThemeToggle() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  
+  btn.addEventListener('click', () => {
+    const current = localStorage.getItem(THEME_KEY) || 'dark';
+    const currentIndex = THEMES.indexOf(current);
+    const nextIndex = (currentIndex + 1) % THEMES.length;
+    applyTheme(THEMES[nextIndex]);
+  });
+  
+  applyTheme();
+}
+
+function bootstrapFront() {
+  renderAll();
+  setupThemeToggle();
+}
+
+bootstrapFront();
