@@ -67,23 +67,26 @@ async function uploadImageToGitHub(file, onProgress) {
 
 // GitHub 資料同步函數
 async function loadDataFromGitHub() {
-  const token = getGitHubToken();
-  if (!token) {
-    console.log('No GitHub token, using localStorage fallback');
-    return null;
-  }
-
   try {
-    const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3.raw'
-      }
+    // Try public raw URL first (no token required)
+    const publicUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
+    let response = await fetch(publicUrl, {
+      headers: { 'Cache-Control': 'no-cache' }
     });
 
+    // If public fetch fails, try authenticated API when token exists
     if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.status}`);
+      const token = getGitHubToken();
+      if (!token) throw new Error(`Failed to fetch public raw: ${response.status}`);
+      const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
+      response = await fetch(apiUrl, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3.raw',
+          'Cache-Control': 'no-cache'
+        }
+      });
+      if (!response.ok) throw new Error(`Failed to fetch via API: ${response.status}`);
     }
 
     const data = await response.json();

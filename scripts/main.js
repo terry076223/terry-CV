@@ -72,22 +72,28 @@ function getGitHubToken() {
 }
 
 async function loadDataFromGitHub() {
-  const token = getGitHubToken();
-  if (!token) {
-    return null;
-  }
-
   try {
-    const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
-    const response = await fetch(url, {
+    // Prefer unauthenticated public fetch (works across browsers)
+    const publicUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
+    let response = await fetch(publicUrl, {
       headers: {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3.raw'
+        'Cache-Control': 'no-cache'
       }
     });
 
+    // Fallback to authenticated API if public fetch fails and token exists
     if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.status}`);
+      const token = getGitHubToken();
+      if (!token) throw new Error(`Failed to fetch public raw: ${response.status}`);
+      const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
+      response = await fetch(apiUrl, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3.raw',
+          'Cache-Control': 'no-cache'
+        }
+      });
+      if (!response.ok) throw new Error(`Failed to fetch via API: ${response.status}`);
     }
 
     const data = await response.json();
