@@ -236,7 +236,11 @@ function renderGrouped(list, targetId, badgeLabel) {
     
     // 若該項目有照片路徑或 base64，顯示圖片版本（適用課程/證照/獎狀）
     if (item.photoPath || item.photoBase64) {
-      const photoSrc = item.photoPath || item.photoBase64;
+      let photoSrc = item.photoPath || item.photoBase64;
+      // If using a repo-relative path, convert to jsDelivr CDN URL for reliability
+      if (typeof photoSrc === 'string' && photoSrc.startsWith('assets/images/')) {
+        photoSrc = `https://cdn.jsdelivr.net/gh/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}@${GITHUB_BRANCH}/${photoSrc}`;
+      }
       const linkHtml = item.link ? `<a href="${item.link}" target="_blank">查看</a>` : '';
       card.classList.add('award-card-with-photo');
       card.innerHTML = `

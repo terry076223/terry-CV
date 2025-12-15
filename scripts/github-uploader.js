@@ -54,8 +54,9 @@ async function uploadImageToGitHub(file, onProgress) {
         const result = await response.json();
         if (onProgress) onProgress(100);
         
-        // 返回相對路徑
-        resolve(filePath);
+        // 返回 CDN 路徑，避免瀏覽器快取與相對路徑問題
+        const cdnPath = `https://cdn.jsdelivr.net/gh/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}@${GITHUB_BRANCH}/${filePath}`;
+        resolve(cdnPath);
       } catch (error) {
         reject(error);
       }
