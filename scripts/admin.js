@@ -741,6 +741,17 @@ function bootstrap() {
     document.getElementById('proj-form').addEventListener('submit', upsertProj);
     document.getElementById('proj-reset').addEventListener('click', () => resetForm('proj-form'));
 
+    // GitHub Token form handler
+    const githubTokenForm = document.getElementById('github-token-form');
+    if (githubTokenForm) {
+      githubTokenForm.addEventListener('submit', handleGitHubTokenSubmit);
+    }
+
+    // Upload handlers for courses, certificates, and awards
+    setupPhotoUpload('course');
+    setupPhotoUpload('cert');
+    setupPhotoUpload('award');
+
     attachListHandlers();
     attachSkillHandlers();
     preloadProfileForm();
@@ -749,6 +760,71 @@ function bootstrap() {
     console.error('Bootstrap error', err);
     alert('後台載入時發生錯誤，請重新整理或清除瀏覽器快取。');
   }
+}
+
+function handleGitHubTokenSubmit(e) {
+  e.preventDefault();
+  const tokenInput = document.getElementById('github-token-input');
+  const token = tokenInput.value.trim();
+  if (!token) {
+    alert('請輸入有效的 GitHub Token');
+    return;
+  }
+  setGitHubToken(token);
+  alert('GitHub Token 已儲存成功！');
+  tokenInput.value = '';
+}
+
+function setupPhotoUpload(type) {
+  const fileInput = document.getElementById(`${type}-photo-file`);
+  if (!fileInput) return;
+
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const pathInput = document.getElementById(`${type}-photo-path`);
+    const preview = document.getElementById(`${type}-photo-preview`);
+    
+    try {
+      // Show uploading status
+      if (preview) {
+        preview.innerHTML = '<p style="color: #2aa8ff; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳中...</p>';
+      }
+
+      // Upload to GitHub
+      const uploadedPath = await uploadImageToGitHub(file, (progress) => {
+        if (preview) {
+          preview.innerHTML = `<p style="color: #2aa8ff; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳中 ${progress}%...</p>`;
+        }
+      });
+
+      // Update path input
+      if (pathInput) {
+        pathInput.value = uploadedPath;
+      }
+
+      // Show preview
+      if (preview) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          preview.innerHTML = `<img src="${ev.target.result}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;" />`;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      alert('圖片上傳成功！請記得點擊「儲存」按鈕保存資料。');
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert(`上傳失敗：${err.message}`);
+      if (preview) {
+        preview.innerHTML = '<p style="color: #ff4757; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳失敗</p>';
+      }
+    }
+
+    // Reset file input
+    e.target.value = '';
+  });
 }
 
 bootstrap();

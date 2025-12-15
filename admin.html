@@ -58,6 +58,24 @@
         <section class="card">
           <div class="panel-head">
             <div>
+              <p class="eyebrow">GitHub</p>
+              <h2>圖片上傳設定</h2>
+            </div>
+          </div>
+          <form id="github-token-form" class="form-grid">
+            <label>GitHub Token
+              <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+              <small style="display: block; color: #9aa1b5; margin-top: 4px;">
+                <a href="https://github.com/settings/tokens" target="_blank" style="color: var(--accent);">建立 Token</a> (需 repo 權限)
+              </small>
+            </label>
+            <button class="btn primary" type="submit">儲存 Token</button>
+          </form>
+          <p class="hint">Token 儲存在本地，用於上傳圖片到 GitHub repo。</p>
+        </section>
+        <section class="card">
+          <div class="panel-head">
+            <div>
               <p class="eyebrow">Profile</p>
               <h2>關於我 / 聯絡方式</h2>
             </div>
@@ -151,9 +169,15 @@
               <label>連結（可留空）<input id="course-link" /></label>
               <label>說明<textarea id="course-desc" rows="3"></textarea></label>
               <label>課程照片路徑
-                <input id="course-photo-path" placeholder="例：assets/images/course1.jpg" />
+                <input id="course-photo-path" placeholder="例：assets/images/course1.jpg" readonly />
                 <small style="display: block; color: #9aa1b5; margin-top: 4px;">圖片路徑（例：assets/images/filename.jpg）</small>
               </label>
+              <div style="display: flex; gap: 8px;">
+                <input type="file" id="course-photo-file" accept="image/*" style="display: none;" />
+                <button class="btn ghost" type="button" id="course-upload-btn" onclick="document.getElementById('course-photo-file').click()">
+                  <i class="fa-solid fa-upload"></i> 上傳圖片
+                </button>
+              </div>
               <button class="btn primary" type="submit">儲存</button>
               <button class="btn ghost" type="button" id="course-reset">清除表單</button>
             </form>
@@ -183,9 +207,15 @@
               <label>連結（可留空）<input id="cert-link" /></label>
               <label>說明<textarea id="cert-desc" rows="3"></textarea></label>
               <label>證照照片路徑
-                <input id="cert-photo-path" placeholder="例：assets/images/cert1.jpg" />
+                <input id="cert-photo-path" placeholder="例：assets/images/cert1.jpg" readonly />
                 <small style="display: block; color: #9aa1b5; margin-top: 4px;">圖片路徑（例：assets/images/filename.jpg）</small>
               </label>
+              <div style="display: flex; gap: 8px;">
+                <input type="file" id="cert-photo-file" accept="image/*" style="display: none;" />
+                <button class="btn ghost" type="button" id="cert-upload-btn" onclick="document.getElementById('cert-photo-file').click()">
+                  <i class="fa-solid fa-upload"></i> 上傳圖片
+                </button>
+              </div>
               <button class="btn primary" type="submit">儲存</button>
               <button class="btn ghost" type="button" id="cert-reset">清除表單</button>
             </form>
@@ -215,9 +245,15 @@
               <label>連結（可留空）<input id="award-link" /></label>
               <label>說明<textarea id="award-desc" rows="3"></textarea></label>
               <label>獎狀照片路徑
-                <input id="award-photo-path" placeholder="例：assets/images/award1.jpg" />
+                <input id="award-photo-path" placeholder="例：assets/images/award1.jpg" readonly />
                 <small style="display: block; color: #9aa1b5; margin-top: 4px;">圖片路徑（例：assets/images/filename.jpg）</small>
               </label>
+              <div style="display: flex; gap: 8px;">
+                <input type="file" id="award-photo-file" accept="image/*" style="display: none;" />
+                <button class="btn ghost" type="button" id="award-upload-btn" onclick="document.getElementById('award-photo-file').click()">
+                  <i class="fa-solid fa-upload"></i> 上傳圖片
+                </button>
+              </div>
               <button class="btn primary" type="submit">儲存</button>
               <button class="btn ghost" type="button" id="award-reset">清除表單</button>
             </form>
@@ -253,6 +289,7 @@
     </section>
   </main>
 
+  <script src="./scripts/github-uploader.js"></script>
   <script type="module" src="./scripts/admin.js"></script>
 </body>
 </html>
