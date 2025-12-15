@@ -214,16 +214,8 @@ function editCert(id) {
   document.getElementById('cert-year').value = item.year;
   document.getElementById('cert-link').value = item.link;
   document.getElementById('cert-desc').value = item.desc;
-  const preview = document.getElementById('cert-photo-preview');
-  if (preview) {
-    if (item.photoBase64) {
-      preview.innerHTML = `<img src="${item.photoBase64}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`;
-      preview.setAttribute('data-photoBase64', item.photoBase64);
-    } else {
-      preview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
-      preview.removeAttribute('data-photoBase64');
-    }
-  }
+  const pathInput = document.getElementById('cert-photo-path');
+  if (pathInput) pathInput.value = item.photoPath || '';
 }
 
 function deleteCert(id) {
@@ -268,16 +260,8 @@ function editCourse(id) {
   document.getElementById('course-year').value = item.year;
   document.getElementById('course-link').value = item.link;
   document.getElementById('course-desc').value = item.desc;
-  const preview = document.getElementById('course-photo-preview');
-  if (preview) {
-    if (item.photoBase64) {
-      preview.innerHTML = `<img src="${item.photoBase64}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`;
-      preview.setAttribute('data-photoBase64', item.photoBase64);
-    } else {
-      preview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
-      preview.removeAttribute('data-photoBase64');
-    }
-  }
+  const pathInput = document.getElementById('course-photo-path');
+  if (pathInput) pathInput.value = item.photoPath || '';
 }
 
 function deleteCourse(id) {
@@ -321,14 +305,8 @@ function editAward(id) {
   document.getElementById('award-year').value = item.year;
   document.getElementById('award-link').value = item.link;
   document.getElementById('award-desc').value = item.desc;
-  const preview = document.getElementById('award-photo-preview');
-  if (item.photoBase64) {
-    preview.innerHTML = `<img src="${item.photoBase64}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`;
-    preview.setAttribute('data-photoBase64', item.photoBase64);
-  } else {
-    preview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
-    preview.removeAttribute('data-photoBase64');
-  }
+  const pathInput = document.getElementById('award-photo-path');
+  if (pathInput) pathInput.value = item.photoPath || '';
 }
 
 function deleteAward(id) {
