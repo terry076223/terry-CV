@@ -14,7 +14,7 @@ const THEME_LABELS = {
 
 // GitHub 配置
 const GITHUB_REPO_OWNER = 'terry076223';
-const GITHUB_REPO_NAME = 'cv-';
+const GITHUB_REPO_NAME = 'terry-CV';
 const GITHUB_BRANCH = 'main';
 const CV_DATA_FILE = 'cv-data.json';
 const GITHUB_TOKEN_KEY = 'cvGitHubToken';

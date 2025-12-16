@@ -1,6 +1,6 @@
 // GitHub API Image Uploader & Data Sync
 const GITHUB_REPO_OWNER = 'terry076223'; // 你的 GitHub 使用者名稱
-const GITHUB_REPO_NAME = 'cv-'; // 你的 repo 名稱
+const GITHUB_REPO_NAME = 'terry-CV'; // 你的 repo 名稱
 const GITHUB_BRANCH = 'main';
 const GITHUB_TOKEN_KEY = 'cvGitHubToken';
 const CV_DATA_FILE = 'cv-data.json';
