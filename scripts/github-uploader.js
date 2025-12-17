@@ -39,8 +39,9 @@ async function uploadImageToGitHub(file, onProgress) {
         const response = await fetch(url, {
           method: 'PUT',
           headers: {
-            'Authorization': `token ${token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
+            'Accept': 'application/vnd.github.v3+json'
           },
           body: JSON.stringify({
             message: `Add image: ${fileName}`,
@@ -114,7 +115,7 @@ async function saveDataToGitHub(data) {
     const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
     const getResponse = await fetch(url, {
       headers: {
-        'Authorization': `token ${token}`,
+        'Authorization': `Bearer ${token}`,
         'Accept': 'application/vnd.github.v3+json'
       }
     });
@@ -130,7 +131,7 @@ async function saveDataToGitHub(data) {
     const putResponse = await fetch(url, {
       method: 'PUT',
       headers: {
-        'Authorization': `token ${token}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

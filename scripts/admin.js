@@ -549,12 +549,14 @@ async function handleAvatarUpload(event) {
     // Cleanup legacy base64 to reduce size
     if (data.profile.avatarBase64) delete data.profile.avatarBase64;
     saveData(data);
-    updateStats();
-    alert('大頭貼已上傳並儲存，前台將顯示 CDN 連結。');
+    
+    // Automatically sync to GitHub
+    alert('大頭貼已上傳，正在同步到 GitHub...');
+    await saveDataToGitHub(data);
+    alert('大頭貼已儲存並同步到 GitHub！');\n    updateStats();
   } catch (err) {
     console.error('Avatar upload failed', err);
-    alert(`上傳失敗：${err.message || err}`);
-  } finally {
+    alert(`上傳或同步失敗：${err.message || err}`);\n  } finally {
     // Reset input value so same file can be re-selected
     event.target.value = '';
   }
@@ -949,7 +951,7 @@ async function checkRepoAccess() {
   }
 }
 
-function setupPhotoUpload(type) {
+async function setupPhotoUpload(type) {
   const fileInput = document.getElementById(`${type}-photo-file`);
   if (!fileInput) return;
 
@@ -966,14 +968,14 @@ function setupPhotoUpload(type) {
         preview.innerHTML = '<p style="color: #2aa8ff; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳中...</p>';
       }
 
-      // Upload to GitHub
+      // Upload to GitHub (returns CDN URL with cache-busting)
       const uploadedPath = await uploadImageToGitHub(file, (progress) => {
         if (preview) {
           preview.innerHTML = `<p style="color: #2aa8ff; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳中 ${progress}%...</p>`;
         }
       });
 
-      // Update path input
+      // Update path input with CDN URL
       if (pathInput) {
         pathInput.value = uploadedPath;
       }
@@ -987,10 +989,15 @@ function setupPhotoUpload(type) {
         reader.readAsDataURL(file);
       }
 
-      alert('圖片上傳成功！請記得點擊「儲存」按鈕保存資料。');
+      alert('圖片上傳成功！正在儲存資料到 GitHub...');
+      
+      // Automatically save data to GitHub after upload
+      const data = loadData();
+      await saveDataToGitHub(data);
+      alert('資料已同步到 GitHub！');
     } catch (err) {
       console.error('Upload failed:', err);
-      alert(`上傳失敗：${err.message}`);
+      alert(`上傳或儲存失敗：${err.message}`);
       if (preview) {
         preview.innerHTML = '<p style="color: #ff4757; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳失敗</p>';
       }
