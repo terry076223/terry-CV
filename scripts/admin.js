@@ -553,10 +553,12 @@ async function handleAvatarUpload(event) {
     // Automatically sync to GitHub
     alert('大頭貼已上傳，正在同步到 GitHub...');
     await saveDataToGitHub(data);
-    alert('大頭貼已儲存並同步到 GitHub！');\n    updateStats();
+    alert('大頭貼已儲存並同步到 GitHub！');
+    updateStats();
   } catch (err) {
     console.error('Avatar upload failed', err);
-    alert(`上傳或同步失敗：${err.message || err}`);\n  } finally {
+    alert(`上傳或同步失敗：${err.message || err}`);
+  } finally {
     // Reset input value so same file can be re-selected
     event.target.value = '';
   }
