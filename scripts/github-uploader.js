@@ -87,7 +87,7 @@ async function loadDataFromGitHub() {
       const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
       response = await fetch(apiUrl, {
         headers: {
-          'Authorization': `token ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Accept': 'application/vnd.github.v3.raw',
           'Cache-Control': 'no-cache'
         }
@@ -110,59 +110,65 @@ async function saveDataToGitHub(data) {
     throw new Error('請先設定 GitHub Token');
   }
 
-  try {
-    // 先取得目前檔案的 SHA（用於更新）
-    const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
-    const getResponse = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github.v3+json'
+  // Retry logic to mitigate 409 conflicts when branch head moves between GET and PUT
+  const maxRetries = 3;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${CV_DATA_FILE}`;
+      // Always fetch latest SHA before each PUT
+      const getResponse = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+
+      let sha = '';
+      if (getResponse.ok) {
+        const existing = await getResponse.json();
+        sha = existing.sha;
+      } else if (getResponse.status !== 404) {
+        const err = await getResponse.json().catch(() => ({}));
+        throw new Error(`Failed to fetch file SHA (${getResponse.status}): ${err.message || 'unknown error'}`);
       }
-    });
 
-    let sha = '';
-    if (getResponse.ok) {
-      const existing = await getResponse.json();
-      sha = existing.sha;
-      console.log('✅ Got latest SHA from GitHub:', sha);
-    } else if (getResponse.status === 404) {
-      console.log('ℹ️ File does not exist, will create new');
-    } else {
-      const err = await getResponse.json();
-      throw new Error(`Failed to fetch file SHA (${getResponse.status}): ${err.message}`);
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+      const putBody = {
+        message: `Update CV data: ${new Date().toLocaleString('zh-TW')}`,
+        content: content,
+        branch: GITHUB_BRANCH,
+        ...(sha ? { sha } : {})
+      };
+
+      const putResponse = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(putBody)
+      });
+
+      if (!putResponse.ok) {
+        // If 409, retry after short delay
+        if (putResponse.status === 409 && attempt < maxRetries) {
+          console.warn(`⚠️ PUT 409 conflict, retrying (${attempt}/${maxRetries - 1})...`);
+          await new Promise(r => setTimeout(r, 400));
+          continue;
+        }
+        const error = await putResponse.json().catch(() => ({}));
+        console.error('❌ GitHub API Error:', { status: putResponse.status, error });
+        throw new Error(`儲存失敗 (${putResponse.status}): ${error.message || JSON.stringify(error)}`);
+      }
+
+      console.log('✅ Saved cvData to GitHub');
+      return true;
+    } catch (err) {
+      if (attempt >= maxRetries) {
+        console.error('❌ Failed to save to GitHub after retries:', err);
+        throw err;
+      }
     }
-
-    // 上傳更新的 JSON
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    const putBody = {
-      message: `Update CV data: ${new Date().toLocaleString('zh-TW')}`,
-      content: content,
-      branch: GITHUB_BRANCH,
-    };
-    if (sha) {
-      putBody.sha = sha; // 只有取得到 SHA 才加上去
-    }
-
-    const putResponse = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(putBody)
-    });
-
-    if (!putResponse.ok) {
-      const error = await putResponse.json();
-      console.error('❌ GitHub API Error:', { status: putResponse.status, error });
-      throw new Error(`儲存失敗 (${putResponse.status}): ${error.message || JSON.stringify(error)}`);
-    }
-
-    console.log('✅ Saved cvData to GitHub');
-    return true;
-  } catch (error) {
-    console.error('❌ Failed to save to GitHub:', error);
-    throw error;
   }
 }
 
