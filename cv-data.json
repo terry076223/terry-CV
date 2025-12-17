@@ -7,20 +7,111 @@
     "email": "contact@example.com",
     "phone": "+886-900-000-000",
     "links": [
-      { "label": "GitHub", "href": "https://github.com/", "icon": "fa-brands fa-github" },
-      { "label": "LinkedIn", "href": "https://www.linkedin.com", "icon": "fa-brands fa-linkedin" }
+      {
+        "label": "GitHub",
+        "href": "https://github.com/",
+        "icon": "fa-brands fa-github"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com",
+        "icon": "fa-brands fa-linkedin"
+      }
     ]
   },
   "skills": [
-    { "id": "skill-1", "name": "資料分析", "items": [{ "name": "Python（Pandas/NumPy）", "level": "熟練" }, { "name": "SAS", "level": "剛接觸" }, { "name": "R", "level": "入門" }, { "name": "統計建模", "level": "進階" }] },
-    { "id": "skill-2", "name": "前端協作", "items": [{ "name": "Angular", "level": "入門" }, { "name": "RWD / CSS3", "level": "進階" }, { "name": "UI/UX 觀念", "level": "入門" }] },
-    { "id": "skill-3", "name": "後端協作", "items": [{ "name": "Spring Boot", "level": "入門" }, { "name": "RESTful API", "level": "入門" }, { "name": "資料流與介接設計", "level": "進階" }] }
+    {
+      "id": "def3f2f5-8f0f-426c-b804-9fac9f22e5e4",
+      "name": "資料分析",
+      "items": [
+        {
+          "name": "Python（Pandas/NumPy）",
+          "level": "熟練"
+        },
+        {
+          "name": "SAS",
+          "level": "剛接觸"
+        },
+        {
+          "name": "R",
+          "level": "入門"
+        },
+        {
+          "name": "統計建模",
+          "level": "進階"
+        }
+      ]
+    },
+    {
+      "id": "eafd06c9-38c0-4547-b86c-9fe68f71a1d3",
+      "name": "前端協作",
+      "items": [
+        {
+          "name": "Angular",
+          "level": "入門"
+        },
+        {
+          "name": "RWD / CSS3",
+          "level": "進階"
+        },
+        {
+          "name": "UI/UX 觀念",
+          "level": "入門"
+        }
+      ]
+    },
+    {
+      "id": "f52c71bf-5c91-48bb-8e8a-01e452b0d236",
+      "name": "後端協作",
+      "items": [
+        {
+          "name": "Spring Boot",
+          "level": "入門"
+        },
+        {
+          "name": "RESTful API",
+          "level": "入門"
+        },
+        {
+          "name": "資料流與介接設計",
+          "level": "進階"
+        }
+      ]
+    }
   ],
   "experience": [
-    { "id": "exp-1", "type": "Work", "company": "中山醫學大學", "role": "資料分析相關", "period": "1 年", "summary": "參與醫學資料分析與研究支援。" },
-    { "id": "exp-2", "type": "Work", "company": "雲林科技大學", "role": "資料分析相關", "period": "4 年", "summary": "學術資料處理、研究數據建模與分析。" },
-    { "id": "exp-3", "type": "Work", "company": "精誠集團子公司台灣資服（TIST）", "role": "數據分析師", "period": "3 年", "summary": "企業資料分析、報表與系統協作，與前後端團隊協作。" },
-    { "id": "exp-4", "type": "Education", "company": "東海大學統計研究所", "role": "碩士", "period": "最高學歷", "summary": "統計理論與應用、資料分析方法。" }
+    {
+      "id": "9b8f09a7-35ff-4a6e-b520-c3e775baf57f",
+      "type": "Work",
+      "company": "中山醫學大學",
+      "role": "資料分析相關",
+      "period": "1 年",
+      "summary": "參與醫學資料分析與研究支援。"
+    },
+    {
+      "id": "4464efd3-713b-4fc9-a07b-d6fdd5f39c6d",
+      "type": "Work",
+      "company": "雲林科技大學",
+      "role": "資料分析相關",
+      "period": "4 年",
+      "summary": "學術資料處理、研究數據建模與分析。"
+    },
+    {
+      "id": "806fb6b4-e5f1-49f7-86aa-09cea0a43bd6",
+      "type": "Work",
+      "company": "精誠集團子公司台灣資服（TIST）",
+      "role": "數據分析師",
+      "period": "3 年",
+      "summary": "企業資料分析、報表與系統協作，與前後端團隊協作。"
+    },
+    {
+      "id": "d53e2648-563e-476c-92f7-12a0eceadab7",
+      "type": "Education",
+      "company": "東海大學統計研究所",
+      "role": "碩士",
+      "period": "最高學歷",
+      "summary": "統計理論與應用、資料分析方法。"
+    }
   ],
   "achievements": [],
   "courses": [],
