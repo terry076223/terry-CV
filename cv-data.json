@@ -114,7 +114,17 @@
     }
   ],
   "achievements": [],
-  "courses": [],
+  "courses": [
+    {
+      "id": "bda53b5f-3692-4f77-ae2e-752a73591d5a",
+      "name": "UI/UX Intensive",
+      "issuer": "DesignLab",
+      "year": "2024",
+      "link": "jjj",
+      "desc": "sss",
+      "photoPath": ""
+    }
+  ],
   "certificates": [],
   "awards": [],
   "projects": []
