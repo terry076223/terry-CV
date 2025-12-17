@@ -21,7 +21,7 @@
   },
   "skills": [
     {
-      "id": "5acc49f4-7e4e-437a-8dda-fe29cc28be09",
+      "id": "0c6efdf2-0dc9-4ca9-87d3-871cc282c2a2",
       "name": "資料分析",
       "items": [
         {
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "id": "5059af48-6d27-41fa-9556-da69c3fdc072",
+      "id": "2af27b3f-f231-45c7-a5d6-5e749eaa0c85",
       "name": "前端協作",
       "items": [
         {
@@ -61,7 +61,7 @@
       ]
     },
     {
-      "id": "f04e9bb7-d0d9-4c25-8a51-b7cffa7c0d0b",
+      "id": "49ce63b0-6de4-4a21-8db6-88ebadfca8c0",
       "name": "後端協作",
       "items": [
         {
@@ -81,7 +81,7 @@
   ],
   "experience": [
     {
-      "id": "4ef9390e-9589-4f5a-a748-dc4ac55ee88b",
+      "id": "178c829a-6d6c-4b90-8178-a79ed7359a30",
       "type": "Work",
       "company": "中山醫學大學",
       "role": "資料分析相關",
@@ -89,7 +89,7 @@
       "summary": "參與醫學資料分析與研究支援。"
     },
     {
-      "id": "5f8b8bbd-c7fe-44a7-8d97-5a1313a3ee5a",
+      "id": "4cc52c0d-f2a4-4cfb-aa7d-838e06c1216f",
       "type": "Work",
       "company": "雲林科技大學",
       "role": "資料分析相關",
@@ -97,7 +97,7 @@
       "summary": "學術資料處理、研究數據建模與分析。"
     },
     {
-      "id": "b58c4046-6ca8-42b1-8c22-7f41e6bbb28f",
+      "id": "c980e8b7-2704-421a-af09-cd0f125d5afd",
       "type": "Work",
       "company": "精誠集團子公司台灣資服（TIST）",
       "role": "數據分析師",
@@ -105,7 +105,7 @@
       "summary": "企業資料分析、報表與系統協作，與前後端團隊協作。"
     },
     {
-      "id": "1f983c29-d439-48b5-ad2f-ec9681627ac7",
+      "id": "dc98423f-51ce-43f6-9fea-cd0bf90770b2",
       "type": "Education",
       "company": "東海大學統計研究所",
       "role": "碩士",
