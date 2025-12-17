@@ -114,18 +114,18 @@
     }
   ],
   "achievements": [],
-  "courses": [
+  "courses": [],
+  "certificates": [
     {
-      "id": "328c5ad1-0eb3-4471-93f6-d37548847462",
-      "name": "UI/UX Intensive",
-      "issuer": "DesignLab",
-      "year": "2023",
-      "link": "jjj",
-      "desc": "222",
+      "id": "ff9fa10b-9f9e-4e98-abb1-8bdbd59c781b",
+      "name": "AWS Cloud Practitioner",
+      "issuer": "AWS",
+      "year": "2024",
+      "link": "111",
+      "desc": "111",
       "photoPath": ""
     }
   ],
-  "certificates": [],
   "awards": [],
   "projects": []
 }
