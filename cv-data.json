@@ -115,17 +115,7 @@
   ],
   "achievements": [],
   "courses": [],
-  "certificates": [
-    {
-      "id": "ff9fa10b-9f9e-4e98-abb1-8bdbd59c781b",
-      "name": "AWS Cloud Practitioner",
-      "issuer": "AWS",
-      "year": "2024",
-      "link": "111",
-      "desc": "111",
-      "photoPath": ""
-    }
-  ],
+  "certificates": [],
   "awards": [],
   "projects": []
 }
