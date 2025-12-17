@@ -18,11 +18,11 @@
         "icon": "fa-brands fa-linkedin"
       }
     ],
-    "avatarPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1765956564835-615AC6D3-DC86-4B9C-ACC2-6766C6BB3B4E.jpeg"
+    "avatarPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1765958659499-615AC6D3-DC86-4B9C-ACC2-6766C6BB3B4E.jpeg"
   },
   "skills": [
     {
-      "id": "1cf530dd-7d71-40b9-bd0c-7c823a722a3e",
+      "id": "3f34a47b-4d82-4337-a90e-6f7f90b00cb2",
       "name": "資料分析",
       "items": [
         {
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "id": "24124573-3337-4833-a03f-cf359d5de331",
+      "id": "74f37f21-f27e-4030-a3a8-0ff3ddbf2053",
       "name": "前端協作",
       "items": [
         {
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "id": "4e657d96-1df1-4965-a031-f32a3bb74e27",
+      "id": "7bc97233-cf2d-47b1-ac3d-90969c727dfe",
       "name": "後端協作",
       "items": [
         {
@@ -82,7 +82,7 @@
   ],
   "experience": [
     {
-      "id": "665c9307-4481-482d-8cc3-89ca6b240feb",
+      "id": "ac180362-d8af-4e7f-8183-325caddd16ab",
       "type": "Work",
       "company": "中山醫學大學",
       "role": "資料分析相關",
@@ -90,7 +90,7 @@
       "summary": "參與醫學資料分析與研究支援。"
     },
     {
-      "id": "61720f83-818e-4805-8b51-6109f953440c",
+      "id": "c96868d1-0696-4f93-b8ac-d0ed1bdda2e9",
       "type": "Work",
       "company": "雲林科技大學",
       "role": "資料分析相關",
@@ -98,7 +98,7 @@
       "summary": "學術資料處理、研究數據建模與分析。"
     },
     {
-      "id": "df515df7-4b98-4257-b827-512657adbc91",
+      "id": "be630654-73f2-4540-b7fb-c9cd37f10261",
       "type": "Work",
       "company": "精誠集團子公司台灣資服（TIST）",
       "role": "數據分析師",
@@ -106,7 +106,7 @@
       "summary": "企業資料分析、報表與系統協作，與前後端團隊協作。"
     },
     {
-      "id": "7ec6d703-f9af-4037-b813-ddbc7de4fe3a",
+      "id": "e127d8e7-f0aa-408f-87a9-9e1b19006a42",
       "type": "Education",
       "company": "東海大學統計研究所",
       "role": "碩士",
