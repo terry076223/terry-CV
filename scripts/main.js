@@ -459,7 +459,15 @@ function setupThemeToggle() {
   applyTheme();
 }
 
-function bootstrapFront() {
+async function bootstrapFront() {
+  // 先從 GitHub 載入最新資料
+  const gitHubData = await loadDataFromGitHub();
+  if (gitHubData) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
+    console.log('✅ Synced data from GitHub to localStorage');
+  }
+  
+  // 渲染頁面
   renderAll();
   setupThemeToggle();
   setupContactForm();
