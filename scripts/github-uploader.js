@@ -124,22 +124,32 @@ async function saveDataToGitHub(data) {
     if (getResponse.ok) {
       const existing = await getResponse.json();
       sha = existing.sha;
+      console.log('✅ Got latest SHA from GitHub:', sha);
+    } else if (getResponse.status === 404) {
+      console.log('ℹ️ File does not exist, will create new');
+    } else {
+      const err = await getResponse.json();
+      throw new Error(`Failed to fetch file SHA (${getResponse.status}): ${err.message}`);
     }
 
     // 上傳更新的 JSON
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const putBody = {
+      message: `Update CV data: ${new Date().toLocaleString('zh-TW')}`,
+      content: content,
+      branch: GITHUB_BRANCH,
+    };
+    if (sha) {
+      putBody.sha = sha; // 只有取得到 SHA 才加上去
+    }
+
     const putResponse = await fetch(url, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        message: `Update CV data: ${new Date().toLocaleString('zh-TW')}`,
-        content: content,
-        branch: GITHUB_BRANCH,
-        ...(sha ? { sha } : {})
-      })
+      body: JSON.stringify(putBody)
     });
 
     if (!putResponse.ok) {
