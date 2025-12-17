@@ -2,15 +2,18 @@
 const GITHUB_REPO_OWNER = 'terry076223'; // 你的 GitHub 使用者名稱
 const GITHUB_REPO_NAME = 'terry-CV'; // 你的 repo 名稱
 const GITHUB_BRANCH = 'main';
-const GITHUB_TOKEN_KEY = 'cvGitHubToken';
+const GITHUB_TOKEN_KEY = 'githubToken'; // 修正：與 admin 頁面一致
 const CV_DATA_FILE = 'cv-data.json';
 
 function getGitHubToken() {
-  return localStorage.getItem(GITHUB_TOKEN_KEY) || '';
+  const token = localStorage.getItem(GITHUB_TOKEN_KEY) || '';
+  console.log('🔑 Token check:', token ? `存在 (長度 ${token.length})` : '未設定');
+  return token;
 }
 
 function setGitHubToken(token) {
   localStorage.setItem(GITHUB_TOKEN_KEY, token);
+  console.log('✅ Token 已儲存');
 }
 
 async function uploadImageToGitHub(file, onProgress) {
@@ -48,7 +51,8 @@ async function uploadImageToGitHub(file, onProgress) {
 
         if (!response.ok) {
           const error = await response.json();
-          throw new Error(error.message || '上傳失敗');
+          console.error('❌ GitHub API Error:', { status: response.status, error });
+          throw new Error(`上傳失敗 (${response.status}): ${error.message || JSON.stringify(error)}`);
         }
 
         const result = await response.json();
@@ -139,7 +143,8 @@ async function saveDataToGitHub(data) {
 
     if (!putResponse.ok) {
       const error = await putResponse.json();
-      throw new Error(error.message || '儲存失敗');
+      console.error('❌ GitHub API Error:', { status: putResponse.status, error });
+      throw new Error(`儲存失敗 (${putResponse.status}): ${error.message || JSON.stringify(error)}`);
     }
 
     console.log('✅ Saved cvData to GitHub');

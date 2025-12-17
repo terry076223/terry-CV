@@ -71,7 +71,10 @@
             </label>
             <button class="btn primary" type="submit">儲存 Token</button>
           </form>
-          <p class="hint">Token 儲存在本地，用於上傳圖片到 GitHub repo。</p>
+          <div id="token-status" style="margin-top: 12px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; min-height: 40px;">
+            <p style="color: #9aa1b5; font-size: 12px; margin: 0;">Token 狀態：未設定</p>
+          </div>
+          <p class="hint">Token 儲存在本地，用於上傳圖片到 GitHub repo。建議使用 fine-grained token，權限設定為 "Contents: Read and Write"。</p>
         </section>
         <section class="card">
           <div class="panel-head">

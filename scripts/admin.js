@@ -759,9 +759,77 @@ function bootstrap() {
 
     // 從 GitHub 載入最新資料（非同步）
     syncDataFromGitHub();
+    
+    // 檢查 Token 狀態
+    checkTokenStatus();
   } catch (err) {
     console.error('Bootstrap error', err);
     alert('後台載入時發生錯誤，請重新整理或清除瀏覽器快取。');
+  }
+}
+
+async function checkTokenStatus() {
+  const token = getGitHubToken();
+  const statusDiv = document.getElementById('token-status');
+  
+  if (!token) {
+    if (statusDiv) {
+      statusDiv.innerHTML = '<p style="color: #ff4757; font-size: 12px; margin: 0;">⚠️ 尚未設定 Token，無法上傳圖片</p>';
+    }
+    return;
+  }
+  
+  if (statusDiv) {
+    statusDiv.innerHTML = '<p style="color: #2aa8ff; font-size: 12px; margin: 0;">⏳ 驗證 Token...</p>';
+  }
+  
+  try {
+    // Check user identity
+    const userResponse = await fetch('https://api.github.com/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    
+    if (!userResponse.ok) {
+      throw new Error(`Token 無效 (${userResponse.status})`);
+    }
+    
+    const user = await userResponse.json();
+    
+    // Check repo access
+    const repoResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    
+    if (!repoResponse.ok) {
+      throw new Error(`無法存取 repo (${repoResponse.status})`);\n    }
+    
+    const repo = await repoResponse.json();
+    const permissions = repo.permissions || {};
+    
+    if (statusDiv) {
+      if (permissions.push) {
+        statusDiv.innerHTML = `
+          <p style="color: #2ecc71; font-size: 12px; margin: 0;">✅ Token 有效！使用者: ${user.login}</p>
+          <p style="font-size: 11px; color: #9aa1b5; margin: 4px 0 0 0;">權限: ✓ 寫入 | ✓ 讀取</p>
+        `;
+      } else {
+        statusDiv.innerHTML = `
+          <p style="color: #f39c12; font-size: 12px; margin: 0;">⚠️ Token 缺少寫入權限</p>
+          <p style="font-size: 11px; color: #9aa1b5; margin: 4px 0 0 0;">請確認 Token 有 "Contents: Read and Write" 權限</p>
+        `;
+      }
+    }
+  } catch (err) {
+    console.error('Token status check failed:', err);
+    if (statusDiv) {
+      statusDiv.innerHTML = `<p style="color: #ff4757; font-size: 12px; margin: 0;">❌ ${err.message}</p>`;
+    }
   }
 }
 
@@ -783,17 +851,101 @@ async function syncDataFromGitHub() {
   }
 }
 
-function handleGitHubTokenSubmit(e) {
+async function handleGitHubTokenSubmit(e) {
   e.preventDefault();
-  const tokenInput = document.getElementById('github-token-input');
+  const tokenInput = document.getElementById('github-token');
+  const statusDiv = document.getElementById('token-status');
   const token = tokenInput.value.trim();
+  
   if (!token) {
     alert('請輸入有效的 GitHub Token');
     return;
   }
-  setGitHubToken(token);
-  alert('GitHub Token 已儲存成功！');
-  tokenInput.value = '';
+  
+  // Test token validity
+  if (statusDiv) {
+    statusDiv.innerHTML = '<p style="color: #2aa8ff;">⏳ 驗證 Token...</p>';
+  }
+  
+  try {
+    const response = await fetch('https://api.github.com/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`Token 無效 (${response.status}): ${error.message}`);
+    }
+    
+    const user = await response.json();
+    setGitHubToken(token);
+    
+    if (statusDiv) {
+      statusDiv.innerHTML = `<p style="color: #2ecc71;">✅ Token 有效！使用者: ${user.login}</p>`;
+    }
+    
+    alert(`GitHub Token 已儲存成功！\n使用者: ${user.login}`);
+    tokenInput.value = '';
+    
+    // Check repo access
+    await checkRepoAccess();
+  } catch (err) {
+    console.error('Token validation failed:', err);
+    if (statusDiv) {
+      statusDiv.innerHTML = `<p style="color: #ff4757;">❌ ${err.message}</p>`;
+    }
+    alert(`Token 驗證失敗：${err.message}`);
+  }
+}
+
+async function checkRepoAccess() {
+  const token = getGitHubToken();
+  const statusDiv = document.getElementById('token-status');
+  
+  if (!token) {
+    if (statusDiv) {
+      statusDiv.innerHTML = '<p style="color: #ff4757;">❌ 請先設定 GitHub Token</p>';
+    }
+    return;
+  }
+  
+  try {
+    const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`無法存取 repo (${response.status}): ${error.message}`);
+    }
+    
+    const repo = await response.json();
+    const permissions = repo.permissions || {};
+    
+    if (statusDiv) {
+      statusDiv.innerHTML = `
+        <p style="color: #2ecc71;">✅ Repo 存取正常</p>
+        <p style="font-size: 11px; color: #9aa1b5; margin: 4px 0 0 0;">
+          權限: ${permissions.push ? '✓ 寫入' : '✗ 無寫入'} | ${permissions.pull ? '✓ 讀取' : '✗ 無讀取'}
+        </p>
+      `;
+    }
+    
+    if (!permissions.push) {
+      alert('⚠️ Token 缺少寫入權限！\n請確認 Token 有 "Contents: Read and Write" 權限。');
+    }
+  } catch (err) {
+    console.error('Repo access check failed:', err);
+    if (statusDiv) {
+      statusDiv.innerHTML = `<p style="color: #ff4757;">❌ ${err.message}</p>`;
+    }
+  }
 }
 
 function setupPhotoUpload(type) {
