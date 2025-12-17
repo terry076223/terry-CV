@@ -807,7 +807,8 @@ async function checkTokenStatus() {
     });
     
     if (!repoResponse.ok) {
-      throw new Error(`無法存取 repo (${repoResponse.status})`);\n    }
+      throw new Error(`無法存取 repo (${repoResponse.status})`);
+    }
     
     const repo = await repoResponse.json();
     const permissions = repo.permissions || {};
