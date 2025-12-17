@@ -114,17 +114,7 @@
     }
   ],
   "achievements": [],
-  "courses": [
-    {
-      "id": "40ff41e8-ed2c-4ba0-908b-c40b19de7bcd",
-      "name": "sss",
-      "issuer": "aaa",
-      "year": "2023",
-      "link": "aaa",
-      "desc": "",
-      "photoPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1765956074694-S__6275105.jpg"
-    }
-  ],
+  "courses": [],
   "certificates": [],
   "awards": [],
   "projects": []
