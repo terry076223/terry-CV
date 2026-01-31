@@ -360,10 +360,12 @@ a:hover { color: #ffe3df; }
 
 .card {
   background: linear-gradient(150deg, rgba(14, 19, 36, 0.95), rgba(12, 18, 32, 0.92));
-  border: 1px solid var(--border);
+  border: 2px solid var(--primary);
   border-radius: 16px;
   padding: 18px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 
+              0 0 20px rgba(62, 169, 255, 0.15),
+              inset 0 1px 0 rgba(62, 169, 255, 0.1);
 }
 
 .theme-light .card {
@@ -426,11 +428,13 @@ a:hover { color: #ffe3df; }
 
 .timeline-item {
   position: relative;
-  border: 1px solid var(--border);
+  border: 2px solid var(--primary);
   border-radius: 12px;
   padding: 16px 18px;
   background: linear-gradient(150deg, rgba(14, 19, 36, 0.95), rgba(12, 18, 32, 0.92));
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 
+              0 0 20px rgba(62, 169, 255, 0.15),
+              inset 0 1px 0 rgba(62, 169, 255, 0.1);
   transform: translateY(var(--y-offset, 0px));
 }
 
@@ -481,8 +485,17 @@ a:hover { color: #ffe3df; }
 .theme-light .badge { background: linear-gradient(135deg, rgba(47, 136, 255, 0.16), rgba(45, 200, 168, 0.16)); border-color: rgba(47, 136, 255, 0.22); }
 
 .skill-card ul { padding-left: 18px; color: var(--text-muted); margin: 8px 0 0; }
-.skill-item { display: flex; align-items: center; gap: 8px; }
-.level-meter { display: inline-grid; grid-template-columns: repeat(5, 10px); gap: 4px; align-items: center; }
+.skill-item {
+  display: grid;
+  grid-template-columns: 1fr 64px 70px;
+  align-items: center;
+  column-gap: 8px;
+  margin-bottom: 10px;
+}
+.skill-name { min-width: 0; }
+.skill-item .badge { justify-content: center; min-width: 64px; }
+.skill-item .badge-empty { visibility: hidden; }
+.level-meter { display: inline-grid; grid-template-columns: repeat(5, 10px); gap: 4px; align-items: center; width: 70px; }
 .level-cell { width: 10px; height: 10px; border-radius: 2px; background: rgba(255,255,255,0.08); border: 1px solid var(--border); }
 .level-cell.filled { background: var(--primary); border-color: rgba(255,255,255,0.15); }
 

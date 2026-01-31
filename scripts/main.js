@@ -153,6 +153,10 @@ function renderProfile(data) {
   document.getElementById('hero-name').textContent = profile.name;
   document.getElementById('hero-title').textContent = profile.title;
   document.getElementById('hero-intro').textContent = profile.heroDescription;
+  const footerName = document.getElementById('footer-name');
+  if (footerName) {
+    footerName.textContent = `© ${new Date().getFullYear()} ${profile.name || ''}`.trim();
+  }
   const avatar = document.getElementById('hero-avatar');
   if (avatar) {
     if (profile.avatarPath) {
@@ -217,9 +221,15 @@ function renderSkills(data) {
       return `<span class=\"level-meter\">${cells}</span>`;
     };
     const itemsHtml = (skill.items || []).map(item => {
-      const levelBadge = item.level ? `<span class=\"badge\">${item.level}</span>` : '';
+        const levelBadge = item.level ? `<span class="badge">${item.level}</span>` : '<span class="badge badge-empty"></span>';
       const score = toScore(item.level);
-      return `<li class=\"skill-item\">${item.name} ${levelBadge} ${meterHtml(score)}</li>`;
+        return `
+          <li class="skill-item">
+            <span class="skill-name">${item.name}</span>
+            ${levelBadge}
+            ${meterHtml(score)}
+          </li>
+        `;
     }).join('');
     card.innerHTML = `
       <h3>${skill.name}</h3>
