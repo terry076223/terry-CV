@@ -75,13 +75,23 @@ function getGitHubToken() {
 
 async function loadDataFromGitHub() {
   try {
-    // Prefer unauthenticated public fetch (works across browsers)
-    const publicUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
-    let response = await fetch(publicUrl, {
+    // Use jsDelivr CDN first (has proper CORS headers)
+    const cdnUrl = `https://cdn.jsdelivr.net/gh/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}@${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
+    let response = await fetch(cdnUrl, {
       headers: {
         'Cache-Control': 'no-cache'
       }
     });
+    
+    // Fallback to raw.githubusercontent if CDN fails
+    if (!response.ok) {
+      const publicUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
+      response = await fetch(publicUrl, {
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
+    }
 
     // Fallback to authenticated API if public fetch fails and token exists
     if (!response.ok) {

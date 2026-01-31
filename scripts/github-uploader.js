@@ -74,13 +74,21 @@ async function uploadImageToGitHub(file, onProgress) {
 // GitHub 資料同步函數
 async function loadDataFromGitHub() {
   try {
-    // Try public raw URL first (no token required)
-    const publicUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
-    let response = await fetch(publicUrl, {
+    // Use jsDelivr CDN first (has proper CORS headers)
+    const cdnUrl = `https://cdn.jsdelivr.net/gh/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}@${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
+    let response = await fetch(cdnUrl, {
       headers: { 'Cache-Control': 'no-cache' }
     });
 
-    // If public fetch fails, try authenticated API when token exists
+    // Fallback to raw.githubusercontent
+    if (!response.ok) {
+      const publicUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
+      response = await fetch(publicUrl, {
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+    }
+
+    // If both fail, try authenticated API when token exists
     if (!response.ok) {
       const token = getGitHubToken();
       if (!token) throw new Error(`Failed to fetch public raw: ${response.status}`);
