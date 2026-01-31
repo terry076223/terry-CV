@@ -21,7 +21,7 @@
         <li><a href="#experience">經歷</a></li>
         <li><a href="#achievements">課程/證照</a></li>
         <li><a href="#projects">作品</a></li>
-        <!-- <li><a href="#contact">聯絡</a></li> -->
+        <li class="is-hidden"><a href="#contact">聯絡</a></li>
         <li><button id="theme-toggle" class="btn ghost" type="button">切換主題</button></li>
       </ul>
     </nav>
@@ -33,7 +33,7 @@
         <p class="intro" id="hero-intro">前台內容由 localStorage 動態讀取，示範資料在首次載入時自動建立。</p>
         <div class="hero-actions">
           <a class="btn primary" href="#projects">查看作品</a>
-          <!-- <button id="contact-btn-hero" class="btn ghost" type="button">聯絡我</button> -->
+          <button id="contact-btn-hero" class="btn ghost is-hidden" type="button">聯絡我</button>
         </div>
         <div class="hero-meta" id="hero-meta"></div>
       </div>
@@ -97,17 +97,16 @@
       <div class="grid" id="projects-grid"></div>
     </section>
 
-    <!-- 聯絡功能暫時隱藏 -->
-    <!-- <section id="contact" class="section">
+    <section id="contact" class="section">
       <div class="section-heading">
         <p class="eyebrow">Contact</p>
         <h2>聯絡方式</h2>
       </div>
       <div class="contact" id="contact-card"></div>
-    </section> -->
+    </section>
 
     <!-- Contact Modal -->
-    <!-- <div id="contact-modal" class="modal">
+    <div id="contact-modal" class="modal is-hidden">
       <div class="modal-overlay" id="modal-overlay"></div>
       <div class="modal-content">
         <button class="modal-close" id="modal-close">&times;</button>
@@ -128,7 +127,7 @@
           <button type="submit" class="btn primary">送出</button>
         </form>
       </div>
-    </div> -->
+    </div>
   </main>
 
   <footer class="footer">

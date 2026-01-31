@@ -457,6 +457,7 @@ async function syncDataFromGitHub() {
 document.addEventListener('DOMContentLoaded', () => {
   renderAll();
   applyTheme();
+  setupThemeToggle();
   // setupContactForm(); // 暫時停用
   // 非同步從 GitHub 同步資料
   syncDataFromGitHub();
@@ -466,6 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
 if (document.readyState !== 'loading') {
   renderAll();
   applyTheme();
+  setupThemeToggle();
   // setupContactForm(); // 暫時停用
   syncDataFromGitHub();
 }
@@ -506,17 +508,21 @@ function setupThemeToggle() {
 }
 
 async function bootstrapFront() {
-  // 先從 GitHub 載入最新資料
-  const gitHubData = await loadDataFromGitHub();
-  if (gitHubData) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
-    console.log('✅ Synced data from GitHub to localStorage');
+  try {
+    // 先從 GitHub 載入最新資料
+    const gitHubData = await loadDataFromGitHub();
+    if (gitHubData) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
+      console.log('✅ Synced data from GitHub to localStorage');
+    }
+  } catch (err) {
+    console.warn('GitHub sync skipped:', err.message);
+  } finally {
+    // 渲染頁面
+    renderAll();
+    setupThemeToggle();
+    // setupContactForm(); // 暫時停用
   }
-  
-  // 渲染頁面
-  renderAll();
-  setupThemeToggle();
-  // setupContactForm(); // 暫時停用
 }
 
 bootstrapFront();
