@@ -76,16 +76,12 @@ async function loadDataFromGitHub() {
   try {
     // Use jsDelivr CDN first (has proper CORS headers)
     const cdnUrl = `https://cdn.jsdelivr.net/gh/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}@${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
-    let response = await fetch(cdnUrl, {
-      headers: { 'Cache-Control': 'no-cache' }
-    });
+    let response = await fetch(cdnUrl);
 
     // Fallback to raw.githubusercontent
     if (!response.ok) {
       const publicUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/${GITHUB_BRANCH}/${CV_DATA_FILE}?t=${Date.now()}`;
-      response = await fetch(publicUrl, {
-        headers: { 'Cache-Control': 'no-cache' }
-      });
+      response = await fetch(publicUrl);
     }
 
     // If both fail, try authenticated API when token exists
