@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>功能测试</title>
+  <title>功能測試</title>
   <style>
     body { font-family: sans-serif; padding: 20px; background: #1a1a1a; color: #fff; }
     .test-section { margin: 20px 0; padding: 15px; background: #2a2a2a; border-radius: 8px; }
@@ -14,37 +14,37 @@
   </style>
 </head>
 <body>
-  <h1>🔧 CV 项目功能测试</h1>
+  <h1>🔧 CV 專案功能測試</h1>
 
   <div class="test-section">
-    <h2>测试 1: localStorage 读写</h2>
-    <button onclick="testLocalStorage()">测试 localStorage</button>
+    <h2>測試 1: localStorage 讀寫</h2>
+    <button onclick="testLocalStorage()">測試 localStorage</button>
     <div id="test1-result" class="result"></div>
   </div>
 
   <div class="test-section">
-    <h2>测试 2: 保存关于我的数据</h2>
-    <input type="text" id="test-intro" placeholder="关于我一" style="width: 300px; padding: 8px;">
-    <input type="text" id="test-about" placeholder="关于我二" style="width: 300px; padding: 8px;">
-    <button onclick="testSaveProfile()">保存数据</button>
+    <h2>測試 2: 儲存關於我的資料</h2>
+    <input type="text" id="test-intro" placeholder="關於我一" style="width: 300px; padding: 8px;">
+    <input type="text" id="test-about" placeholder="關於我二" style="width: 300px; padding: 8px;">
+    <button onclick="testSaveProfile()">儲存資料</button>
     <div id="test2-result" class="result"></div>
   </div>
 
   <div class="test-section">
-    <h2>测试 3: 读取并显示数据</h2>
-    <button onclick="testLoadProfile()">读取数据</button>
+    <h2>測試 3: 讀取並顯示資料</h2>
+    <button onclick="testLoadProfile()">讀取資料</button>
     <div id="test3-result" class="result"></div>
   </div>
 
   <div class="test-section">
-    <h2>测试 4: 查看完整数据结构</h2>
-    <button onclick="testViewData()">查看数据</button>
+    <h2>測試 4: 檢視完整資料結構</h2>
+    <button onclick="testViewData()">檢視資料</button>
     <div id="test4-result" class="result"></div>
   </div>
 
   <div class="test-section">
-    <h2>测试 5: 清除所有数据</h2>
-    <button onclick="testClearData()" style="background: #f44336;">清除数据</button>
+    <h2>測試 5: 清除所有資料</h2>
+    <button onclick="testClearData()" style="background: #f44336;">清除資料</button>
     <div id="test5-result" class="result"></div>
   </div>
 
@@ -54,28 +54,28 @@
     function testLocalStorage() {
       const result = document.getElementById('test1-result');
       try {
-        // 测试写入
+        // 測試寫入
         localStorage.setItem('test', 'hello');
         const value = localStorage.getItem('test');
         localStorage.removeItem('test');
         
         if (value === 'hello') {
-          result.innerHTML = '<span class="success">✓ localStorage 读写正常</span>';
+          result.innerHTML = '<span class="success">✓ localStorage 讀寫正常</span>';
         } else {
-          result.innerHTML = '<span class="error">✗ localStorage 读取失败</span>';
+          result.innerHTML = '<span class="error">✗ localStorage 讀取失敗</span>';
         }
       } catch (err) {
-        result.innerHTML = `<span class="error">✗ 错误: ${err.message}</span>`;
+        result.innerHTML = `<span class="error">✗ 錯誤: ${err.message}</span>`;
       }
     }
 
     function testSaveProfile() {
       const result = document.getElementById('test2-result');
       try {
-        const heroDesc = document.getElementById('test-intro').value || '测试首页简介';
-        const aboutDesc = document.getElementById('test-about').value || '测试关于我简介';
+        const heroDesc = document.getElementById('test-intro').value || '測試首頁簡介';
+        const aboutDesc = document.getElementById('test-about').value || '測試關於我簡介';
         
-        // 获取或创建数据
+        // 取得或建立資料
         let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
         if (!data.profile) {
           data.profile = {};
@@ -83,16 +83,16 @@
         
         data.profile.heroDescription = heroDesc;
         data.profile.aboutDescription = aboutDesc;
-        data.profile.name = '测试用户';
-        data.profile.title = '测试职称';
+        data.profile.name = '測試使用者';
+        data.profile.title = '測試職稱';
         
-        // 保存
+        // 儲存
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         
-        result.innerHTML = `<span class="success">✓ 数据已保存</span>
+        result.innerHTML = `<span class="success">✓ 資料已儲存</span>
           <pre>heroDescription: ${heroDesc}\naboutDescription: ${aboutDesc}</pre>`;
       } catch (err) {
-        result.innerHTML = `<span class="error">✗ 保存失败: ${err.message}</span>`;
+        result.innerHTML = `<span class="error">✗ 儲存失敗: ${err.message}</span>`;
       }
     }
 
@@ -102,17 +102,17 @@
         const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
         
         if (!data || !data.profile) {
-          result.innerHTML = '<span class="error">✗ 没有找到数据</span>';
+          result.innerHTML = '<span class="error">✗ 沒有找到資料</span>';
           return;
         }
         
         const heroDesc = data.profile.heroDescription || '(空)';
         const aboutDesc = data.profile.aboutDescription || '(空)';
         
-        result.innerHTML = `<span class="success">✓ 数据读取成功</span>
-          <pre>首页简介: ${heroDesc}\n关于我简介: ${aboutDesc}</pre>`;
+        result.innerHTML = `<span class="success">✓ 資料讀取成功</span>
+          <pre>首頁簡介: ${heroDesc}\n關於我簡介: ${aboutDesc}</pre>`;
       } catch (err) {
-        result.innerHTML = `<span class="error">✗ 读取失败: ${err.message}</span>`;
+        result.innerHTML = `<span class="error">✗ 讀取失敗: ${err.message}</span>`;
       }
     }
 
@@ -121,35 +121,35 @@
       try {
         const data = localStorage.getItem(STORAGE_KEY);
         if (!data) {
-          result.innerHTML = '<span class="error">✗ localStorage 中没有数据</span>';
+          result.innerHTML = '<span class="error">✗ localStorage 中沒有資料</span>';
           return;
         }
         
         const parsed = JSON.parse(data);
-        result.innerHTML = `<span class="success">✓ 数据结构:</span>
+        result.innerHTML = `<span class="success">✓ 資料結構:</span>
           <pre>${JSON.stringify(parsed, null, 2)}</pre>`;
       } catch (err) {
-        result.innerHTML = `<span class="error">✗ 错误: ${err.message}</span>`;
+        result.innerHTML = `<span class="error">✗ 錯誤: ${err.message}</span>`;
       }
     }
 
     function testClearData() {
       const result = document.getElementById('test5-result');
-      if (confirm('确定要清除所有数据吗？')) {
+      if (confirm('確定要清除所有資料嗎？')) {
         localStorage.removeItem(STORAGE_KEY);
-        result.innerHTML = '<span class="success">✓ 数据已清除</span>';
+        result.innerHTML = '<span class="success">✓ 資料已清除</span>';
       }
     }
 
-    // 页面加载时自动检测
+    // 頁面載入時自動檢測
     window.onload = function() {
       testLocalStorage();
       const data = localStorage.getItem(STORAGE_KEY);
       if (data) {
-        console.log('✓ 检测到现有数据');
+        console.log('✓ 檢測到現有資料');
         testLoadProfile();
       } else {
-        console.log('⚠ 没有检测到数据');
+        console.log('⚠ 沒有檢測到資料');
       }
     };
   </script>

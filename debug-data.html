@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>数据调试</title>
+  <title>資料除錯</title>
   <style>
     body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #0f0; }
     .info { background: #2a2a2a; padding: 15px; margin: 10px 0; border-left: 4px solid #0f0; }
@@ -13,17 +13,17 @@
   </style>
 </head>
 <body>
-  <h1>🔍 CV 数据调试工具</h1>
+  <h1>🔍 CV 資料除錯工具</h1>
   
   <div class="info">
-    <h2>当前 localStorage 数据</h2>
-    <button onclick="checkData()">刷新检查</button>
-    <button onclick="clearData()">清除数据</button>
+    <h2>目前 localStorage 資料</h2>
+    <button onclick="checkData()">重新整理檢查</button>
+    <button onclick="clearData()">清除資料</button>
     <div id="data-display"></div>
   </div>
 
   <div class="info">
-    <h2>关于我字段检查</h2>
+    <h2>關於我欄位檢查</h2>
     <div id="about-check"></div>
   </div>
 
@@ -37,14 +37,14 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       
       if (!raw) {
-        display.innerHTML = '<div class="error">❌ localStorage 中没有数据！</div>';
+        display.innerHTML = '<div class="error">❌ localStorage 中沒有資料！</div>';
         return;
       }
 
       try {
         const data = JSON.parse(raw);
         
-        // 检查关键字段
+        // 檢查關鍵欄位
         const profile = data.profile || {};
         const heroDesc = profile.heroDescription || '';
         const aboutDesc = profile.aboutDescription || '';
@@ -52,35 +52,35 @@
         aboutCheck.innerHTML = `
           <pre>profile.heroDescription: "${heroDesc}"</pre>
           <pre>profile.aboutDescription: "${aboutDesc}"</pre>
-          <pre>显示在首页顶部的内容: "${heroDesc}"</pre>
-          <pre>显示在关于我区块的内容: "${aboutDesc || heroDesc}"</pre>
+          <pre>顯示在首頁頂部的內容: "${heroDesc}"</pre>
+          <pre>顯示在關於我區塊的內容: "${aboutDesc || heroDesc}"</pre>
         `;
         
-        // 显示完整数据
+        // 顯示完整資料
         display.innerHTML = `
           <pre>${JSON.stringify(data, null, 2)}</pre>
         `;
         
       } catch (err) {
-        display.innerHTML = `<div class="error">❌ 解析错误: ${err.message}</div>`;
+        display.innerHTML = `<div class="error">❌ 解析錯誤: ${err.message}</div>`;
       }
     }
 
     function clearData() {
-      if (confirm('确定清除所有数据？')) {
+      if (confirm('確定清除所有資料？')) {
         localStorage.removeItem(STORAGE_KEY);
-        alert('数据已清除！请重新打开后台输入数据。');
+        alert('資料已清除！請重新打開後台輸入資料。');
         checkData();
       }
     }
 
-    // 自动检查
+    // 自動檢查
     window.onload = checkData;
 
-    // 监听 storage 变化
+    // 監聽 storage 變化
     window.addEventListener('storage', function(e) {
       if (e.key === STORAGE_KEY) {
-        console.log('数据已更新！');
+        console.log('資料已更新！');
         checkData();
       }
     });

@@ -184,7 +184,7 @@ function renderProfile(data) {
 
   const about = document.getElementById('about-content');
   if (about) {
-    // 显示关于我区块的内容，如果为空则显示首页简介
+    // 顯示關於我區塊的內容，若為空則顯示首頁簡介
     const content = profile.aboutDescription || profile.heroDescription;
     about.innerHTML = `
       <h3>${profile.title}</h3>

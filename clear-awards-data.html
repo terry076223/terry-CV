@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>清除舊獎狀數據 | CV Prototype</title>
+  <title>清除舊獎狀資料 | CV Prototype</title>
   <style>
     body {
       font-family: "Noto Sans TC", system-ui, -apple-system, sans-serif;
@@ -64,12 +64,12 @@
 </head>
 <body>
   <div class="container">
-    <h1>清除舊獎狀數據</h1>
+    <h1>清除舊獎狀資料</h1>
     <div class="warning">
-      ⚠️ 此操作將清除所有舊的獎狀數據（沒有照片字段的獎狀）。<br><br>
-      清除後，你需要重新在後台添加獎狀並上傳照片。
+      ⚠️ 此操作將清除所有舊的獎狀資料（沒有照片欄位的獎狀）。<br><br>
+      清除後，你需要重新在後台新增獎狀並上傳照片。
     </div>
-    <button class="btn-danger" onclick="clearOldAwards()">清除舊獎狀數據</button>
+    <button class="btn-danger" onclick="clearOldAwards()">清除舊獎狀資料</button>
     <button class="btn-secondary" onclick="goToAdmin()">返回後台</button>
     <div id="message"></div>
   </div>
@@ -95,7 +95,7 @@
           localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
           
           if (hasPhotos) {
-            showMessage('✓ 已清除舊獎狀數據。\n現在你可以回到後台重新添加獎狀並上傳照片。', 'success');
+            showMessage('✓ 已清除舊獎狀資料。\n現在你可以回到後台重新新增獎狀並上傳照片。', 'success');
           } else {
             showMessage('✓ 獎狀列表已清空。\n你可以回到後台添加新的獎狀。', 'success');
           }
