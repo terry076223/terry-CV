@@ -2,8 +2,6 @@
   "profile": {
     "name": "劉昱宏",
     "title": "數據分析師（具前後端協作能力）",
-    "heroDescription": "東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。",
-    "aboutDescription": "",
     "location": "Taiwan",
     "email": "contact@example.com",
     "phone": "+886-900-000-000",
@@ -18,11 +16,14 @@
         "href": "https://www.linkedin.com",
         "icon": "fa-brands fa-linkedin"
       }
-    ]
+    ],
+    "heroDescription": "東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。",
+    "aboutDescription": "",
+    "avatarPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1769839303183-615AC6D3-DC86-4B9C-ACC2-6766C6BB3B4E.jpeg"
   },
   "skills": [
     {
-      "id": "6ea7e8ef-d0b8-4bed-80e7-c55d6d42a718",
+      "id": "646cf7f4-f179-474c-97d1-046312d17a1a",
       "name": "資料分析",
       "items": [
         {
@@ -44,7 +45,7 @@
       ]
     },
     {
-      "id": "adc5ddbc-7974-4c98-ac21-40a8c2172b5e",
+      "id": "17f8dcd2-6a34-42f8-a419-c9956e651dd9",
       "name": "前端協作",
       "items": [
         {
@@ -62,7 +63,7 @@
       ]
     },
     {
-      "id": "adb6e186-ecad-4974-837e-338d2c4633da",
+      "id": "25b87453-765b-44a3-b7c5-a0f14caa7af6",
       "name": "後端協作",
       "items": [
         {
@@ -82,7 +83,7 @@
   ],
   "experience": [
     {
-      "id": "e04f1313-2e22-490e-bba1-a2c038f91f9c",
+      "id": "d78edf46-759d-4eb9-80a1-c21870306728",
       "type": "Work",
       "company": "中山醫學大學",
       "role": "資料分析相關",
@@ -90,7 +91,7 @@
       "summary": "參與醫學資料分析與研究支援。"
     },
     {
-      "id": "72d0c565-544c-4b77-9233-21ff3884b8d4",
+      "id": "9a46aed4-c267-48be-aaeb-86b929bb4390",
       "type": "Work",
       "company": "雲林科技大學",
       "role": "資料分析相關",
@@ -98,7 +99,7 @@
       "summary": "學術資料處理、研究數據建模與分析。"
     },
     {
-      "id": "b69a9c0d-28f7-4adc-bac1-eef7909aa7bb",
+      "id": "7285909c-4ef8-4356-9860-8a3befa6380d",
       "type": "Work",
       "company": "精誠集團子公司台灣資服（TIST）",
       "role": "數據分析師",
@@ -106,7 +107,7 @@
       "summary": "企業資料分析、報表與系統協作，與前後端團隊協作。"
     },
     {
-      "id": "7438a18b-a92e-46b7-8c0c-546215f84b20",
+      "id": "22ef437c-e98f-42da-a6e4-3353a4a660a1",
       "type": "Education",
       "company": "東海大學統計研究所",
       "role": "碩士",
