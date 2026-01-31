@@ -120,6 +120,15 @@
   "certificates": [],
   "awards": [
     {
+      "id": "95dec5ba-bd25-4c36-bb52-2f4db9cfefaf",
+      "name": "AAA",
+      "issuer": "AAA",
+      "year": "2024",
+      "link": "",
+      "desc": "AAA",
+      "photoPath": ""
+    },
+    {
       "id": "5f20663d-66c9-41aa-825f-f9beb5dfb568",
       "name": "AA",
       "issuer": "WQWQ",
