@@ -251,6 +251,34 @@ a:hover { color: #ffe3df; }
   padding: 0 16px;
 }
 
+.links {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.links a:hover {
+  background: rgba(62, 169, 255, 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
 .hero {
   position: relative;
   padding: 60px 6vw 40px;
@@ -370,13 +398,84 @@ a:hover { color: #ffe3df; }
   }
 }
 
-.timeline { display: grid; gap: 12px; }
-.timeline-item {
-  border-left: 3px solid var(--primary);
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 10px;
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px 160px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 0;
+  counter-reset: seq;
 }
+.section#experience h3 { text-align: center; }
+.section#experience h3:last-of-type { margin-top: 64px; }
+
+/* 中心垂直時間軸線 */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(62,169,255,0.28), rgba(75,226,200,0.24));
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(150deg, rgba(14, 19, 36, 0.95), rgba(12, 18, 32, 0.92));
+  box-shadow: var(--shadow);
+  transform: translateY(var(--y-offset, 0px));
+}
+
+/* 移除卡片內的計數器圓點 */
+.timeline-item::before {
+  display: none;
+}
+
+/* 左右交錯排列 */
+.timeline-item:nth-child(odd) { 
+  grid-column: 1;
+}
+.timeline-item:nth-child(even) { 
+  grid-column: 2;
+}
+
+/* 中心時間軸上的節點圓點 - 隱藏 */
+.timeline-item::after {
+  display: none;
+}
+
+/* 從卡片到時間軸的連接線 */
+.timeline-item .connector {
+  position: absolute;
+  top: 30px;
+  height: 3px;
+  width: 80px;
+  background: linear-gradient(90deg, rgba(62,169,255,0.6), rgba(75,226,200,0.5));
+  z-index: 1;
+}
+
+/* 左側卡片：連接線從右側延伸到中心 */
+.timeline-item:nth-child(odd) .connector { 
+  right: calc(-82px);
+  left: auto;
+}
+
+/* 右側卡片：連接線從左側延伸到中心 */
+.timeline-item:nth-child(even) .connector { 
+  left: calc(-82px);
+}
+
+#education-timeline { margin-top: 96px; }
+
+.timeline-hint { text-align: center; color: var(--text-muted); font-size: 12px; margin: 6px 0 12px; }
 
 .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 999px; background: linear-gradient(135deg, rgba(62, 169, 255, 0.18), rgba(75, 226, 200, 0.18)); color: var(--text-main); font-size: 12px; border: 1px solid rgba(62, 169, 255, 0.25); }
 .theme-light .badge { background: linear-gradient(135deg, rgba(47, 136, 255, 0.16), rgba(45, 200, 168, 0.16)); border-color: rgba(47, 136, 255, 0.22); }
@@ -397,6 +496,44 @@ a:hover { color: #ffe3df; }
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
   align-items: center;
+}
+
+/* 響應式調整：平板和行動裝置改為單欄 */
+@media (max-width: 900px) {
+  .timeline {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-left: 24px;
+    max-width: 680px;
+  }
+
+  /* 中心時間軸移至左側 */
+  .timeline::before {
+    left: 16px;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(62,169,255,0.24), rgba(75,226,200,0.20));
+    transform: translateX(-50%);
+  }
+
+  /* 單欄模式下所有項目靠左排列 */
+  .timeline-item { 
+    grid-column: 1;
+    text-align: left;
+  }
+
+  /* 節點移至左側 */
+  .timeline-item::after { 
+    left: 16px;
+    transform: translateX(-50%);
+  }
+
+  /* 連接器統一從左側延伸 */
+  .timeline-item .connector {
+    left: 16px;
+    width: 36px;
+    transform: translateX(0%);
+    right: auto;
+  }
 }
 
 .contact .card { display: flex; flex-direction: column; gap: 10px; }

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>垂直時間軸 Timeline 演示</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-main: #05060c;
+      --bg-card: #0b1020;
+      --bg-surface: #0f1629;
+      --primary: #3ea9ff;
+      --secondary: #b28bff;
+      --accent: #ff9f43;
+      --accent-2: #4be2c8;
+      --accent-3: #ff6fb1;
+      --text-main: #e8ecf5;
+      --text-muted: #99a2ba;
+      --border: #1f2942;
+      --shadow: 0 14px 45px rgba(0, 0, 0, 0.45);
+      --glow: 0 0 24px rgba(62, 169, 255, 0.25);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 60px;
+      font-size: 14px;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px 160px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 0;
+      counter-reset: seq;
+    }
+
+    /* 中心垂直時間軸線 */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(62, 169, 255, 0.28), rgba(75, 226, 200, 0.24));
+      border-radius: 2px;
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      background: linear-gradient(150deg, rgba(14, 19, 36, 0.95), rgba(12, 18, 32, 0.92));
+      box-shadow: var(--shadow);
+    }
+
+    /* 移除卡片內的計數器圓點 - 改為不顯示 */
+    .timeline-item::before {
+      display: none;
+    }
+
+    /* 左右交錯排列 */
+    .timeline-item:nth-child(odd) {
+      grid-column: 1;
+    }
+
+    .timeline-item:nth-child(even) {
+      grid-column: 2;
+    }
+
+    /* 中心時間軸上的節點圓點 */
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      width: 14px;
+      height: 14px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(62, 169, 255, 0.25);
+      border: 3px solid rgba(255, 255, 255, 0.95);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    /* 從卡片到時間軸的水平連接線 */
+    .timeline-item .connector {
+      position: absolute;
+      top: 30px;
+      height: 3px;
+      width: 80px;
+      background: linear-gradient(90deg, rgba(62, 169, 255, 0.6), rgba(75, 226, 200, 0.5));
+      z-index: 1;
+    }
+
+    /* 左側卡片：連接線從右側延伸到中心 */
+    .timeline-item:nth-child(odd) .connector {
+      right: calc(-82px);
+      left: auto;
+    }
+
+    /* 右側卡片：連接線從左側延伸到中心 */
+    .timeline-item:nth-child(even) .connector {
+      left: calc(-82px);
+    }
+
+    /* 時間軸項目內容 */
+    .timeline-item h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      color: var(--text-main);
+    }
+
+    .timeline-item .period {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin: 0 0 8px;
+    }
+
+    .timeline-item p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(62, 169, 255, 0.18), rgba(75, 226, 200, 0.18));
+      color: var(--text-main);
+      font-size: 12px;
+      border: 1px solid rgba(62, 169, 255, 0.25);
+      margin-bottom: 8px;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 900px) {
+      .timeline {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding-left: 24px;
+        max-width: 680px;
+      }
+
+      /* 中心時間軸移至左側 */
+      .timeline::before {
+        left: 16px;
+        transform: translateX(-50%);
+      }
+
+      /* 單欄模式下所有項目靠左排列 */
+      .timeline-item {
+        grid-column: 1;
+        text-align: left;
+      }
+
+      /* 節點移至左側 */
+      .timeline-item::after {
+        left: 16px;
+        transform: translateX(-50%);
+      }
+
+      /* 連接器統一從左側延伸 */
+      .timeline-item .connector {
+        left: 16px;
+        width: 36px;
+        right: auto;
+      }
+    }
+
+    .note {
+      background: rgba(62, 169, 255, 0.1);
+      border-left: 3px solid var(--primary);
+      padding: 16px;
+      margin: 40px 0;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .note strong {
+      color: var(--text-main);
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>垂直時間軸 Timeline 演示</h1>
+    <p class="subtitle">Angular + CSS 實現 - 左右交錯排列版型</p>
+
+    <div class="note">
+      <strong>✓ 實現特性：</strong><br>
+      1. 中心垂直時間軸線<br>
+      2. 時間軸上的節點圓點（藍色）<br>
+      3. 左右交錯排列卡片<br>
+      4. 卡片內容對齐（左側靠右、右側靠左）<br>
+      5. 水平連接線<br>
+      6. 移除卡片內的計數器圓點<br>
+      7. 響應式設計（行動裝置改為單欄）
+    </div>
+
+    <div class="timeline">
+      <!-- 左側卡片 -->
+      <div class="timeline-item">
+        <span class="connector"></span>
+        <div class="badge">工作</div>
+        <h3>中山醫學大學 — 資料分析相關</h3>
+        <p class="period">1 年</p>
+        <p>參與醫學資料分析與研究支援。</p>
+      </div>
+
+      <!-- 右側卡片 -->
+      <div class="timeline-item">
+        <span class="connector"></span>
+        <div class="badge">工作</div>
+        <h3>雲林科技大學 — 資料分析相關</h3>
+        <p class="period">4 年</p>
+        <p>學術資料處理、研究數據建模與分析。</p>
+      </div>
+
+      <!-- 左側卡片 -->
+      <div class="timeline-item">
+        <span class="connector"></span>
+        <div class="badge">工作</div>
+        <h3>精誠集團子公司 — 數據分析師</h3>
+        <p class="period">3 年</p>
+        <p>企業資料分析、報表與系統協作，與前後端團隊協作。</p>
+      </div>
+
+      <!-- 右側卡片 -->
+      <div class="timeline-item">
+        <span class="connector"></span>
+        <div class="badge">學歷</div>
+        <h3>東海大學統計研究所 — 碩士</h3>
+        <p class="period">最高學歷</p>
+        <p>統計理論與應用、資料分析方法。</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>CSS 關鍵實現：</strong><br>
+      • <code>.timeline::before</code> - 中心垂直線<br>
+      • <code>.timeline-item::after</code> - 時間軸節點（保留）<br>
+      • <code>.timeline-item::before</code> - <code>display: none</code> 隱藏卡片內圓點<br>
+      • <code>.connector</code> - 水平連接線<br>
+      • <code>:nth-child(odd/even)</code> - 左右交錯 + 對齐調整<br>
+      • <code>@media (max-width: 900px)</code> - 響應式單欄
+    </div>
+
+    <div class="note">
+      <strong>在您的項目中使用：</strong><br>
+      已更新 <code>styles/styles.css</code> 中的 <code>.timeline</code> 相關 CSS。<br>
+      JavaScript 無需修改，<code>renderExperience()</code> 函數已正確渲染 <code>.connector</code> 元素。
+    </div>
+  </div>
+</body>
+</html>

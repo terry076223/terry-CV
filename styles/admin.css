@@ -58,6 +58,7 @@ body {
   border-radius: 16px;
   padding: 18px;
   box-shadow: var(--shadow);
+  margin: 8px 0;
 }
 
 .login-card { max-width: 520px; margin: 0 auto; }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>数据调试</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #0f0; }
+    .info { background: #2a2a2a; padding: 15px; margin: 10px 0; border-left: 4px solid #0f0; }
+    .warn { border-left-color: #ff0; color: #ff0; }
+    .error { border-left-color: #f00; color: #f00; }
+    pre { background: #000; padding: 10px; overflow-x: auto; }
+    button { background: #0f0; color: #000; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🔍 CV 数据调试工具</h1>
+  
+  <div class="info">
+    <h2>当前 localStorage 数据</h2>
+    <button onclick="checkData()">刷新检查</button>
+    <button onclick="clearData()">清除数据</button>
+    <div id="data-display"></div>
+  </div>
+
+  <div class="info">
+    <h2>关于我字段检查</h2>
+    <div id="about-check"></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'cvData';
+
+    function checkData() {
+      const display = document.getElementById('data-display');
+      const aboutCheck = document.getElementById('about-check');
+      
+      const raw = localStorage.getItem(STORAGE_KEY);
+      
+      if (!raw) {
+        display.innerHTML = '<div class="error">❌ localStorage 中没有数据！</div>';
+        return;
+      }
+
+      try {
+        const data = JSON.parse(raw);
+        
+        // 检查关键字段
+        const profile = data.profile || {};
+        const heroDesc = profile.heroDescription || '';
+        const aboutDesc = profile.aboutDescription || '';
+        
+        aboutCheck.innerHTML = `
+          <pre>profile.heroDescription: "${heroDesc}"</pre>
+          <pre>profile.aboutDescription: "${aboutDesc}"</pre>
+          <pre>显示在首页顶部的内容: "${heroDesc}"</pre>
+          <pre>显示在关于我区块的内容: "${aboutDesc || heroDesc}"</pre>
+        `;
+        
+        // 显示完整数据
+        display.innerHTML = `
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+        
+      } catch (err) {
+        display.innerHTML = `<div class="error">❌ 解析错误: ${err.message}</div>`;
+      }
+    }
+
+    function clearData() {
+      if (confirm('确定清除所有数据？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        alert('数据已清除！请重新打开后台输入数据。');
+        checkData();
+      }
+    }
+
+    // 自动检查
+    window.onload = checkData;
+
+    // 监听 storage 变化
+    window.addEventListener('storage', function(e) {
+      if (e.key === STORAGE_KEY) {
+        console.log('数据已更新！');
+        checkData();
+      }
+    });
+  </script>
+</body>
+</html>

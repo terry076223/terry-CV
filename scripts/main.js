@@ -23,7 +23,8 @@ const defaultData = {
   profile: {
     name: '劉昱宏',
     title: '數據分析師（具前後端協作能力）',
-    intro: '東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。',
+    heroDescription: '東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。',
+    aboutDescription: '',
     location: 'Taiwan',
     email: 'contact@example.com',
     phone: '+886-900-000-000',
@@ -59,6 +60,7 @@ function loadData() {
   try {
     const parsed = JSON.parse(raw);
     migrateAchievements(parsed);
+    migrateProfileFields(parsed);
     return parsed;
   } catch (err) {
     console.error('Failed to parse cv data, resetting.', err);
@@ -124,11 +126,32 @@ function migrateAchievements(data) {
   }
 }
 
+function migrateProfileFields(data) {
+  // 将旧字段 intro 和 aboutSection1 迁移到新字段 heroDescription 和 aboutDescription
+  if (!data || !data.profile) return;
+  
+  // 迁移 intro → heroDescription
+  if (!data.profile.heroDescription && data.profile.intro) {
+    data.profile.heroDescription = data.profile.intro;
+    delete data.profile.intro;
+  }
+  
+  // 迁移 aboutSection1 → aboutDescription
+  if (!data.profile.aboutDescription && data.profile.aboutSection1) {
+    data.profile.aboutDescription = data.profile.aboutSection1;
+    delete data.profile.aboutSection1;
+  }
+  
+  // 确保新字段存在
+  if (!data.profile.heroDescription) data.profile.heroDescription = '';
+  if (!data.profile.aboutDescription) data.profile.aboutDescription = '';
+}
+
 function renderProfile(data) {
   const { profile } = data;
   document.getElementById('hero-name').textContent = profile.name;
   document.getElementById('hero-title').textContent = profile.title;
-  document.getElementById('hero-intro').textContent = profile.intro;
+  document.getElementById('hero-intro').textContent = profile.heroDescription;
   const avatar = document.getElementById('hero-avatar');
   if (avatar) {
     if (profile.avatarPath) {
@@ -159,13 +182,17 @@ function renderProfile(data) {
     });
 
   const about = document.getElementById('about-content');
-  about.innerHTML = `
-    <h3>${profile.title}</h3>
-    <p>${profile.intro}</p>
-    <div class="links">
-      ${profile.links.map(link => `<a href="${link.href}" target="_blank"><i class="${link.icon}"></i> ${link.label}</a>`).join('')}
-    </div>
-  `;
+  if (about) {
+    // 显示关于我区块的内容，如果为空则显示首页简介
+    const content = profile.aboutDescription || profile.heroDescription;
+    about.innerHTML = `
+      <h3>${profile.title}</h3>
+      <p>${content}</p>
+      <div class="links">
+        ${profile.links.map(link => `<a href="${link.href}" target="_blank"><i class="${link.icon}"></i> ${link.label}</a>`).join('')}
+      </div>
+    `;
+  }
 }
 
 function renderSkills(data) {
@@ -209,27 +236,33 @@ function renderExperience(data) {
 
   const workItems = (data.experience || []).filter(i => (i.type || '').toLowerCase() === 'work');
   const eduItems = (data.experience || []).filter(i => (i.type || '').toLowerCase() === 'education');
+  
+  console.log('渲染經歷:', { workItems: workItems.length, eduItems: eduItems.length });
 
-  workItems.forEach(item => {
+  workItems.forEach((item, idx) => {
     const div = document.createElement('div');
     div.className = 'timeline-item';
+    div.style.setProperty('--y-offset', `${idx * 24}px`);
     div.innerHTML = `
       <div class="badge">工作</div>
       <h3>${item.company} — ${item.role}</h3>
       <p class="text-muted">${item.period}</p>
       <p>${item.summary}</p>
+      <span class="connector"></span>
     `;
     if (workWrap) workWrap.appendChild(div);
   });
 
-  eduItems.forEach(item => {
+  eduItems.forEach((item, idx) => {
     const div = document.createElement('div');
     div.className = 'timeline-item';
+    div.style.setProperty('--y-offset', `${idx * 24}px`);
     div.innerHTML = `
       <div class="badge">學歷</div>
       <h3>${item.company} — ${item.role}</h3>
       <p class="text-muted">${item.period}</p>
       <p>${item.summary}</p>
+      <span class="connector"></span>
     `;
     if (eduWrap) eduWrap.appendChild(div);
   });

@@ -2,7 +2,8 @@
   "profile": {
     "name": "劉昱宏",
     "title": "數據分析師（具前後端協作能力）",
-    "intro": "東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。",
+    "heroDescription": "東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。",
+    "aboutDescription": "",
     "location": "Taiwan",
     "email": "contact@example.com",
     "phone": "+886-900-000-000",

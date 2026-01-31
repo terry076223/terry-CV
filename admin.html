@@ -89,7 +89,10 @@
             <label>所在地<input id="profile-location" /></label>
             <label>Email<input id="profile-email" type="email" /></label>
             <label>電話<input id="profile-phone" /></label>
-            <label style="grid-column: 1 / -1;">關於我<textarea id="profile-intro" rows="4" required></textarea></label>
+            <label>GitHub<input id="profile-github" type="url" placeholder="https://github.com/username" /></label>
+            <label>LinkedIn<input id="profile-linkedin" type="url" placeholder="https://linkedin.com/in/username" /></label>
+            <label style="grid-column: 1 / -1;">首頁簡介（heroDescription）<textarea id="profile-hero-description" rows="4" required></textarea></label>
+            <label style="grid-column: 1 / -1;">關於我簡介（aboutDescription）<textarea id="profile-about-description" rows="4" placeholder="補充說明或額外介紹"></textarea></label>
             <label style="grid-column: 1 / -1;">大頭貼上傳（Prototype，存為 base64）<input id="profile-avatar" type="file" accept="image/*" /></label>
             <button class="btn primary" type="submit">儲存</button>
             <button class="btn ghost" type="button" id="profile-reset">清除變更</button>

@@ -8,7 +8,8 @@ const defaultData = {
   profile: {
     name: '劉昱宏',
     title: '數據分析師（具前後端協作能力）',
-    intro: '東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。',
+    heroDescription: '東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。',
+    aboutDescription: '',
     location: 'Taiwan',
     email: 'contact@example.com',
     phone: '+886-900-000-000',
@@ -45,12 +46,53 @@ function loadData() {
   try {
     const parsed = JSON.parse(raw);
     migrateAchievements(parsed);
+    migrateProfileFields(parsed);
     return parsed;
   } catch (err) {
     console.error('Failed to parse cv data, resetting.', err);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
     return structuredClone(defaultData);
   }
+}
+
+function migrateAchievements(data) {
+  if (!data) return;
+  if (!Array.isArray(data.courses)) data.courses = [];
+  if (!Array.isArray(data.certificates)) data.certificates = [];
+  if (!Array.isArray(data.awards)) data.awards = [];
+  if (Array.isArray(data.achievements) && data.achievements.length) {
+    data.achievements.forEach(item => {
+      const copy = { ...item, id: item.id || crypto.randomUUID() };
+      const t = (item.type || '').toLowerCase();
+      if (t.includes('課程')) data.courses.push(copy);
+      else if (t.includes('證照')) data.certificates.push(copy);
+      else if (t.includes('獎') || t.includes('award')) data.awards.push(copy);
+      else data.courses.push(copy);
+    });
+    data.achievements = [];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+}
+
+function migrateProfileFields(data) {
+  // 將舊字段 intro 和 aboutSection1 遷移到新字段 heroDescription 和 aboutDescription
+  if (!data || !data.profile) return;
+  
+  // 遷移 intro → heroDescription
+  if (!data.profile.heroDescription && data.profile.intro) {
+    data.profile.heroDescription = data.profile.intro;
+    delete data.profile.intro;
+  }
+  
+  // 遷移 aboutSection1 → aboutDescription
+  if (!data.profile.aboutDescription && data.profile.aboutSection1) {
+    data.profile.aboutDescription = data.profile.aboutSection1;
+    delete data.profile.aboutSection1;
+  }
+  
+  // 確保新字段存在
+  if (!data.profile.heroDescription) data.profile.heroDescription = '';
+  if (!data.profile.aboutDescription) data.profile.aboutDescription = '';
 }
 
 function saveData(data) {
@@ -120,6 +162,7 @@ function upsertExperienceWork(event) {
   saveData(data);
   resetForm('exp-work-form');
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function upsertExperienceEdu(event) {
@@ -139,6 +182,7 @@ function upsertExperienceEdu(event) {
   saveData(data);
   resetForm('exp-edu-form');
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function editExperienceWork(id) {
@@ -168,6 +212,7 @@ function deleteExperience(id) {
   data.experience = data.experience.filter(i => i.id !== id);
   saveData(data);
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function upsertCert(event) {
@@ -188,11 +233,15 @@ function upsertCert(event) {
   if (idx >= 0) data.certificates[idx] = payload; else data.certificates.unshift(payload);
   saveData(data);
   resetForm('cert-form');
-  if (certPreview) {
-    certPreview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
-    certPreview.removeAttribute('data-photoBase64');
+  {
+    const certPreview = document.getElementById('cert-photo-preview');
+    if (certPreview) {
+      certPreview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
+      certPreview.removeAttribute('data-photoBase64');
+    }
   }
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function editCert(id) {
@@ -234,11 +283,15 @@ function upsertCourse(event) {
   if (idx >= 0) data.courses[idx] = payload; else data.courses.unshift(payload);
   saveData(data);
   resetForm('course-form');
-  if (coursePreview) {
-    coursePreview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
-    coursePreview.removeAttribute('data-photoBase64');
+  {
+    const coursePreview = document.getElementById('course-photo-preview');
+    if (coursePreview) {
+      coursePreview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
+      coursePreview.removeAttribute('data-photoBase64');
+    }
   }
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function editCourse(id) {
@@ -281,9 +334,13 @@ function upsertAward(event) {
   saveData(data);
   resetForm('award-form');
   
-  preview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
-  preview.removeAttribute('data-photoBase64');
+  const preview = document.getElementById('award-photo-preview');
+  if (preview) {
+    preview.innerHTML = '<p style="color: #9aa1b5; font-size: 12px; margin: 0; text-align: center; padding: 12px;">上傳照片後預覽</p>';
+    preview.removeAttribute('data-photoBase64');
+  }
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function editAward(id) {
@@ -323,6 +380,7 @@ function upsertProj(event) {
   saveData(data);
   resetForm('proj-form');
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function editProj(id) {
@@ -500,7 +558,34 @@ function handleProfileSubmit(event) {
   data.profile.location = document.getElementById('profile-location').value.trim();
   data.profile.email = document.getElementById('profile-email').value.trim();
   data.profile.phone = document.getElementById('profile-phone').value.trim();
-  data.profile.intro = document.getElementById('profile-intro').value.trim();
+  data.profile.heroDescription = document.getElementById('profile-hero-description').value.trim();
+  data.profile.aboutDescription = document.getElementById('profile-about-description').value.trim();
+  
+  // 更新 links 中的 GitHub 和 LinkedIn
+  const githubUrl = document.getElementById('profile-github').value.trim();
+  const linkedinUrl = document.getElementById('profile-linkedin').value.trim();
+  
+  // 確保 links 陣列存在
+  if (!data.profile.links) {
+    data.profile.links = [];
+  }
+  
+  // 更新或添加 GitHub 連結
+  const githubLink = data.profile.links.find(link => link.label === 'GitHub');
+  if (githubLink) {
+    githubLink.href = githubUrl;
+  } else if (githubUrl) {
+    data.profile.links.push({ label: 'GitHub', href: githubUrl, icon: 'fa-brands fa-github' });
+  }
+  
+  // 更新或添加 LinkedIn 連結
+  const linkedinLink = data.profile.links.find(link => link.label === 'LinkedIn');
+  if (linkedinLink) {
+    linkedinLink.href = linkedinUrl;
+  } else if (linkedinUrl) {
+    data.profile.links.push({ label: 'LinkedIn', href: linkedinUrl, icon: 'fa-brands fa-linkedin' });
+  }
+  
   saveData(data);
   refreshUI();
 }
@@ -512,7 +597,20 @@ function preloadProfileForm() {
   document.getElementById('profile-location').value = data.profile.location || '';
   document.getElementById('profile-email').value = data.profile.email || '';
   document.getElementById('profile-phone').value = data.profile.phone || '';
-  document.getElementById('profile-intro').value = data.profile.intro || '';
+  document.getElementById('profile-hero-description').value = data.profile.heroDescription || '';
+  document.getElementById('profile-about-description').value = data.profile.aboutDescription || '';
+  
+  // 讀取 GitHub 和 LinkedIn 連結
+  if (data.profile.links) {
+    const githubLink = data.profile.links.find(link => link.label === 'GitHub');
+    if (githubLink) {
+      document.getElementById('profile-github').value = githubLink.href || '';
+    }
+    const linkedinLink = data.profile.links.find(link => link.label === 'LinkedIn');
+    if (linkedinLink) {
+      document.getElementById('profile-linkedin').value = linkedinLink.href || '';
+    }
+  }
 }
 
 function handlePasswordChange(event) {
@@ -586,6 +684,7 @@ function upsertSkill(event) {
   saveData(data);
   resetForm('skill-form');
   renderSkillList();
+  alert('已儲存成功，前台已更新！');
 }
 
 function editSkill(id) {
@@ -991,12 +1090,24 @@ async function setupPhotoUpload(type) {
         reader.readAsDataURL(file);
       }
 
-      alert('圖片上傳成功！正在儲存資料到 GitHub...');
-      
-      // Automatically save data to GitHub after upload
-      const data = loadData();
-      await saveDataToGitHub(data);
-      alert('資料已同步到 GitHub！');
+      // Auto-save: if form has required fields, trigger submit to persist entry
+      const form = document.getElementById(`${type}-form`);
+      const requiredIds = {
+        course: ['course-name','course-issuer','course-year'],
+        cert: ['cert-name','cert-issuer','cert-year'],
+        award: ['award-name','award-issuer','award-year']
+      }[type] || [];
+      const hasAll = requiredIds.every(id => {
+        const el = document.getElementById(id);
+        return el && String(el.value || '').trim().length > 0;
+      });
+      if (form && hasAll) {
+        // Submit the form to run upsert* handler, which saves and syncs to GitHub
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+        alert('圖片上傳成功！已自動儲存並同步到 GitHub。');
+      } else {
+        alert('圖片上傳成功！請完成表單必要欄位（名稱/主辦/年份）後按「儲存」，即可同步到前台。');
+      }
     } catch (err) {
       console.error('Upload failed:', err);
       alert(`上傳或儲存失敗：${err.message}`);
