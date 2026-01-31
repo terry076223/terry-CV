@@ -355,6 +355,7 @@ function renderContact(data) {
   `;
 }
 
+/* 聯絡表單功能暫時隱藏
 function setupContactForm() {
   const modal = document.getElementById('contact-modal');
   const btn = document.getElementById('contact-btn-hero');
@@ -423,6 +424,7 @@ function setupContactForm() {
     }, 1500);
   });
 }
+*/
 
 function renderAll() {
   const data = loadData();
@@ -455,7 +457,7 @@ async function syncDataFromGitHub() {
 document.addEventListener('DOMContentLoaded', () => {
   renderAll();
   applyTheme();
-  setupContactForm();
+  // setupContactForm(); // 暫時停用
   // 非同步從 GitHub 同步資料
   syncDataFromGitHub();
 });
@@ -464,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
 if (document.readyState !== 'loading') {
   renderAll();
   applyTheme();
-  setupContactForm();
+  // setupContactForm(); // 暫時停用
   syncDataFromGitHub();
 }
 
@@ -514,7 +516,7 @@ async function bootstrapFront() {
   // 渲染頁面
   renderAll();
   setupThemeToggle();
-  setupContactForm();
+  // setupContactForm(); // 暫時停用
 }
 
 bootstrapFront();
