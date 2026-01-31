@@ -372,6 +372,10 @@ a:hover { color: #ffe3df; }
   background: linear-gradient(150deg, rgba(255, 255, 255, 0.98), rgba(243, 247, 255, 0.96));
 }
 
+.theme-light .timeline-item {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.98), rgba(243, 247, 255, 0.96));
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
