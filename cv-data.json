@@ -118,6 +118,16 @@
   "achievements": [],
   "courses": [],
   "certificates": [],
-  "awards": [],
+  "awards": [
+    {
+      "id": "5f20663d-66c9-41aa-825f-f9beb5dfb568",
+      "name": "AA",
+      "issuer": "WQWQ",
+      "year": "2024",
+      "link": "",
+      "desc": "SSSS",
+      "photoPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1769839374098-S__6275105.jpg"
+    }
+  ],
   "projects": []
 }
