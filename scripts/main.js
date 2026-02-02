@@ -355,7 +355,6 @@ function renderContact(data) {
   `;
 }
 
-/* 聯絡表單功能暫時隱藏
 function setupContactForm() {
   const modal = document.getElementById('contact-modal');
   const btn = document.getElementById('contact-btn-hero');
@@ -424,7 +423,6 @@ function setupContactForm() {
     }, 1500);
   });
 }
-*/
 
 function renderAll() {
   const data = loadData();
@@ -441,36 +439,26 @@ function renderAll() {
 // 在頁面載入時從 GitHub 同步資料
 async function syncDataFromGitHub() {
   try {
-    const gitHubData = await loadDataFromGitHub();
-    if (gitHubData) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
-      console.log('✅ Synced data from GitHub');
-      // 重新渲染 UI
-      renderAll();
+    // 只在 localStorage 为空时才从 GitHub 同步，避免覆盖后台的修改
+    const localData = localStorage.getItem(STORAGE_KEY);
+    if (!localData) {
+      const gitHubData = await loadDataFromGitHub();
+      if (gitHubData) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
+        console.log('✅ Initial sync: Loaded data from GitHub');
+        // 重新渲染 UI
+        renderAll();
+      }
+    } else {
+      console.log('✅ Using existing localStorage data (skip GitHub sync)');
     }
   } catch (err) {
     console.warn('GitHub sync skipped:', err.message);
   }
 }
 
-// 初始化
-document.addEventListener('DOMContentLoaded', () => {
-  renderAll();
-  applyTheme();
-  setupThemeToggle();
-  // setupContactForm(); // 暫時停用
-  // 非同步從 GitHub 同步資料
-  syncDataFromGitHub();
-});
-
-// 如果頁面已加載時才執行 DOMContentLoaded 沒觸發
-if (document.readyState !== 'loading') {
-  renderAll();
-  applyTheme();
-  setupThemeToggle();
-  // setupContactForm(); // 暫時停用
-  syncDataFromGitHub();
-}
+// 初始化已由 bootstrapFront() 在文件末尾处理
+// 不再需要 DOMContentLoaded 监听器，避免重复初始化
 
 function applyTheme(theme) {
   const body = document.body;
@@ -509,11 +497,18 @@ function setupThemeToggle() {
 
 async function bootstrapFront() {
   try {
-    // 先從 GitHub 載入最新資料
-    const gitHubData = await loadDataFromGitHub();
-    if (gitHubData) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
-      console.log('✅ Synced data from GitHub to localStorage');
+    // 檢查 localStorage 是否已有資料
+    const localData = localStorage.getItem(STORAGE_KEY);
+    
+    if (!localData) {
+      // 只有在 localStorage 為空時才從 GitHub 載入
+      const gitHubData = await loadDataFromGitHub();
+      if (gitHubData) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
+        console.log('✅ Initial sync: Loaded data from GitHub to localStorage');
+      }
+    } else {
+      console.log('✅ Using existing localStorage data (skip GitHub sync to preserve admin changes)');
     }
   } catch (err) {
     console.warn('GitHub sync skipped:', err.message);
@@ -521,7 +516,7 @@ async function bootstrapFront() {
     // 渲染頁面
     renderAll();
     setupThemeToggle();
-    // setupContactForm(); // 暫時停用
+    setupContactForm();
   }
 }
 

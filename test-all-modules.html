@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>完整模块测试 - 后台→前台数据流验证</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 40px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .module {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .module h2 {
+      color: #1e3c72;
+      font-size: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .module-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .status {
+      padding: 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .status.pending { background: #e3f2fd; color: #1976d2; border-left: 4px solid #1976d2; }
+    .status.success { background: #e8f5e9; color: #2e7d32; border-left: 4px solid #2e7d32; }
+    .status.error { background: #ffebee; color: #c62828; border-left: 4px solid #c62828; }
+    .status.warning { background: #fff3e0; color: #ef6c00; border-left: 4px solid #ef6c00; }
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin: 8px 0;
+      transition: transform 0.2s;
+    }
+    button:hover { transform: translateY(-2px); }
+    button:active { transform: translateY(0); }
+    button.secondary {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    button.success {
+      background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+    }
+    button.danger {
+      background: linear-gradient(135deg, #ff5252 0%, #c62828 100%);
+    }
+    .actions {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #f0f0f0;
+      text-align: center;
+    }
+    .actions button {
+      width: auto;
+      min-width: 200px;
+      margin: 5px;
+    }
+    pre {
+      background: #263238;
+      color: #aed581;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+    .summary {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .summary h2 {
+      color: #1e3c72;
+      margin-bottom: 20px;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 36px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    .stat-label {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 完整模块测试工具</h1>
+    <p class="subtitle">测试后台的所有功能模块是否能正确更新到前台</p>
+
+    <div class="summary">
+      <h2>📊 当前数据统计</h2>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value" id="stat-work">-</div>
+          <div class="stat-label">工作经验</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-edu">-</div>
+          <div class="stat-label">学历</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-skills">-</div>
+          <div class="stat-label">技能</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-projects">-</div>
+          <div class="stat-label">项目</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-courses">-</div>
+          <div class="stat-label">课程</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-certs">-</div>
+          <div class="stat-label">证照</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-awards">-</div>
+          <div class="stat-label">奖状</div>
+        </div>
+      </div>
+      <button onclick="loadStats()" style="width: auto; margin: 20px auto 0;">🔄 刷新统计</button>
+    </div>
+
+    <div class="grid">
+      <!-- 1. 个人资料 -->
+      <div class="module">
+        <h2><span class="module-icon">👤</span>个人资料 Profile</h2>
+        <div class="status pending" id="status-profile">等待测试...</div>
+        <button onclick="testProfile()">🧪 测试个人资料更新</button>
+        <button class="secondary" onclick="viewProfileData()">📄 查看数据</button>
+      </div>
+
+      <!-- 2. 工作经历 -->
+      <div class="module">
+        <h2><span class="module-icon">💼</span>工作经历 Work</h2>
+        <div class="status pending" id="status-work">等待测试...</div>
+        <button onclick="testWork()">🧪 添加测试工作</button>
+        <button class="secondary" onclick="viewWorkData()">📄 查看数据</button>
+      </div>
+
+      <!-- 3. 学历 -->
+      <div class="module">
+        <h2><span class="module-icon">🎓</span>学历 Education</h2>
+        <div class="status pending" id="status-edu">等待测试...</div>
+        <button onclick="testEducation()">🧪 添加测试学历</button>
+        <button class="secondary" onclick="viewEduData()">📄 查看数据</button>
+      </div>
+
+      <!-- 4. 技能 -->
+      <div class="module">
+        <h2><span class="module-icon">⚡</span>技能 Skills</h2>
+        <div class="status pending" id="status-skills">等待测试...</div>
+        <button onclick="testSkills()">🧪 添加测试技能</button>
+        <button class="secondary" onclick="viewSkillsData()">📄 查看数据</button>
+      </div>
+
+      <!-- 5. 课程 -->
+      <div class="module">
+        <h2><span class="module-icon">📚</span>课程 Courses</h2>
+        <div class="status pending" id="status-courses">等待测试...</div>
+        <button onclick="testCourses()">🧪 添加测试课程</button>
+        <button class="secondary" onclick="viewCoursesData()">📄 查看数据</button>
+      </div>
+
+      <!-- 6. 证照 -->
+      <div class="module">
+        <h2><span class="module-icon">📜</span>证照 Certificates</h2>
+        <div class="status pending" id="status-certs">等待测试...</div>
+        <button onclick="testCertificates()">🧪 添加测试证照</button>
+        <button class="secondary" onclick="viewCertsData()">📄 查看数据</button>
+      </div>
+
+      <!-- 7. 奖状 -->
+      <div class="module">
+        <h2><span class="module-icon">🏆</span>奖状 Awards</h2>
+        <div class="status pending" id="status-awards">等待测试...</div>
+        <button onclick="testAwards()">🧪 添加测试奖状</button>
+        <button class="secondary" onclick="viewAwardsData()">📄 查看数据</button>
+      </div>
+
+      <!-- 8. 项目 -->
+      <div class="module">
+        <h2><span class="module-icon">📂</span>项目 Projects</h2>
+        <div class="status pending" id="status-projects">等待测试...</div>
+        <button onclick="testProjects()">🧪 添加测试项目</button>
+        <button class="secondary" onclick="viewProjectsData()">📄 查看数据</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="success" onclick="window.open('index.html', '_blank')">
+        🌐 打开前台验证
+      </button>
+      <button class="success" onclick="window.open('admin.html', '_blank')">
+        ⚙️ 打开后台管理
+      </button>
+      <button onclick="testAll()">
+        🚀 一键测试所有模块
+      </button>
+      <button class="danger" onclick="cleanTestData()">
+        🗑️ 清理所有测试数据
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'cvData';
+    const TEST_PREFIX = 'TEST_';
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        alert('❌ 请先访问前台或后台页面初始化数据');
+        return null;
+      }
+      return JSON.parse(raw);
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function setStatus(module, type, message) {
+      const el = document.getElementById(`status-${module}`);
+      el.className = `status ${type}`;
+      el.innerHTML = message;
+    }
+
+    function loadStats() {
+      const data = loadData();
+      if (!data) return;
+
+      document.getElementById('stat-work').textContent = 
+        data.experience?.filter(e => e.type === 'Work').length || 0;
+      document.getElementById('stat-edu').textContent = 
+        data.experience?.filter(e => e.type === 'Education').length || 0;
+      document.getElementById('stat-skills').textContent = data.skills?.length || 0;
+      document.getElementById('stat-projects').textContent = data.projects?.length || 0;
+      document.getElementById('stat-courses').textContent = data.courses?.length || 0;
+      document.getElementById('stat-certs').textContent = data.certificates?.length || 0;
+      document.getElementById('stat-awards').textContent = data.awards?.length || 0;
+    }
+
+    function testProfile() {
+      const data = loadData();
+      if (!data) return;
+
+      const originalName = data.profile.name;
+      data.profile.name = TEST_PREFIX + '测试姓名 ' + Date.now();
+      data.profile.title = TEST_PREFIX + '测试职位';
+      data.profile.heroDescription = '✅ 这是测试用的首页简介 - ' + new Date().toLocaleTimeString();
+
+      saveData(data);
+      setStatus('profile', 'success', 
+        `✅ 已更新个人资料<br><small>姓名: ${data.profile.name}</small>`);
+      loadStats();
+    }
+
+    function testWork() {
+      const data = loadData();
+      if (!data) return;
+
+      const testWork = {
+        id: TEST_PREFIX + crypto.randomUUID(),
+        type: 'Work',
+        company: TEST_PREFIX + '测试公司 ' + Date.now(),
+        role: '测试职位',
+        period: '2024-现在',
+        summary: '✅ 这是测试工作经验，用于验证后台→前台数据流。'
+      };
+
+      data.experience.unshift(testWork);
+      saveData(data);
+      setStatus('work', 'success', 
+        `✅ 已添加测试工作<br><small>公司: ${testWork.company}</small>`);
+      loadStats();
+    }
+
+    function testEducation() {
+      const data = loadData();
+      if (!data) return;
+
+      const testEdu = {
+        id: TEST_PREFIX + crypto.randomUUID(),
+        type: 'Education',
+        company: TEST_PREFIX + '测试大学 ' + Date.now(),
+        role: '测试学位',
+        period: '2020-2024',
+        summary: '✅ 这是测试学历数据。'
+      };
+
+      data.experience.unshift(testEdu);
+      saveData(data);
+      setStatus('edu', 'success', 
+        `✅ 已添加测试学历<br><small>学校: ${testEdu.company}</small>`);
+      loadStats();
+    }
+
+    function testSkills() {
+      const data = loadData();
+      if (!data) return;
+
+      const testSkill = {
+        id: TEST_PREFIX + crypto.randomUUID(),
+        name: TEST_PREFIX + '测试技能 ' + Date.now(),
+        items: [
+          { name: '测试技能项1', level: '熟练' },
+          { name: '测试技能项2', level: '进阶' }
+        ]
+      };
+
+      data.skills.unshift(testSkill);
+      saveData(data);
+      setStatus('skills', 'success', 
+        `✅ 已添加测试技能<br><small>${testSkill.name}</small>`);
+      loadStats();
+    }
+
+    function testProjects() {
+      const data = loadData();
+      if (!data) return;
+
+      const testProj = {
+        id: TEST_PREFIX + crypto.randomUUID(),
+        name: TEST_PREFIX + '测试项目 ' + Date.now(),
+        tech: 'HTML / CSS / JavaScript',
+        link: 'https://github.com',
+        desc: '✅ 这是测试项目，用于验证数据流。'
+      };
+
+      data.projects.unshift(testProj);
+      saveData(data);
+      setStatus('projects', 'success', 
+        `✅ 已添加测试项目<br><small>${testProj.name}</small>`);
+      loadStats();
+    }
+
+    function testCourses() {
+      const data = loadData();
+      if (!data) return;
+
+      const testCourse = {
+        id: TEST_PREFIX + crypto.randomUUID(),
+        name: TEST_PREFIX + '测试课程 ' + Date.now(),
+        issuer: '测试机构',
+        year: '2024',
+        link: '',
+        desc: '✅ 这是测试课程数据。',
+        photoPath: ''
+      };
+
+      if (!Array.isArray(data.courses)) data.courses = [];
+      data.courses.unshift(testCourse);
+      saveData(data);
+      setStatus('courses', 'success', 
+        `✅ 已添加测试课程<br><small>${testCourse.name}</small>`);
+      loadStats();
+    }
+
+    function testCertificates() {
+      const data = loadData();
+      if (!data) return;
+
+      const testCert = {
+        id: TEST_PREFIX + crypto.randomUUID(),
+        name: TEST_PREFIX + '测试证照 ' + Date.now(),
+        issuer: '测试发证机构',
+        year: '2024',
+        link: '',
+        desc: '✅ 这是测试证照数据。',
+        photoPath: ''
+      };
+
+      if (!Array.isArray(data.certificates)) data.certificates = [];
+      data.certificates.unshift(testCert);
+      saveData(data);
+      setStatus('certs', 'success', 
+        `✅ 已添加测试证照<br><small>${testCert.name}</small>`);
+      loadStats();
+    }
+
+    function testAwards() {
+      const data = loadData();
+      if (!data) return;
+
+      const testAward = {
+        id: TEST_PREFIX + crypto.randomUUID(),
+        name: TEST_PREFIX + '测试奖状 ' + Date.now(),
+        issuer: '测试颁奖单位',
+        year: '2024',
+        link: '',
+        desc: '✅ 这是测试奖状数据。',
+        photoPath: ''
+      };
+
+      if (!Array.isArray(data.awards)) data.awards = [];
+      data.awards.unshift(testAward);
+      saveData(data);
+      setStatus('awards', 'success', 
+        `✅ 已添加测试奖状<br><small>${testAward.name}</small>`);
+      loadStats();
+    }
+
+    async function testAll() {
+      if (!confirm('确定要测试所有模块吗？这将添加测试数据到所有模块。')) return;
+      
+      testProfile();
+      await sleep(300);
+      testWork();
+      await sleep(300);
+      testEducation();
+      await sleep(300);
+      testSkills();
+      await sleep(300);
+      testProjects();
+      await sleep(300);
+      testCourses();
+      await sleep(300);
+      testCertificates();
+      await sleep(300);
+      testAwards();
+
+      alert('✅ 所有模块测试完成！\n现在请打开前台页面验证数据是否正确显示。');
+    }
+
+    function cleanTestData() {
+      if (!confirm('确定要清理所有测试数据吗？\n这将删除所有带有 TEST_ 前缀的数据。')) return;
+
+      const data = loadData();
+      if (!data) return;
+
+      let removed = 0;
+
+      // 恢复 profile
+      if (data.profile.name?.startsWith(TEST_PREFIX)) {
+        data.profile.name = '劉昱宏';
+        removed++;
+      }
+      if (data.profile.title?.startsWith(TEST_PREFIX)) {
+        data.profile.title = '數據分析師（具前後端協作能力）';
+        removed++;
+      }
+      if (data.profile.heroDescription?.includes('测试')) {
+        data.profile.heroDescription = '東海大學統計研究所畢，熟悉 Python / SAS / R，具備前端 Angular 與後端 Spring Boot 協作與資料流設計能力。';
+        removed++;
+      }
+
+      // 清理 experience
+      const origExpLen = data.experience.length;
+      data.experience = data.experience.filter(e => !e.id.startsWith(TEST_PREFIX));
+      removed += origExpLen - data.experience.length;
+
+      // 清理 skills
+      const origSkillLen = data.skills.length;
+      data.skills = data.skills.filter(s => !s.id.startsWith(TEST_PREFIX));
+      removed += origSkillLen - data.skills.length;
+
+      // 清理 projects
+      const origProjLen = data.projects.length;
+      data.projects = data.projects.filter(p => !p.id.startsWith(TEST_PREFIX));
+      removed += origProjLen - data.projects.length;
+
+      // 清理 courses
+      if (data.courses) {
+        const origLen = data.courses.length;
+        data.courses = data.courses.filter(c => !c.id.startsWith(TEST_PREFIX));
+        removed += origLen - data.courses.length;
+      }
+
+      // 清理 certificates
+      if (data.certificates) {
+        const origLen = data.certificates.length;
+        data.certificates = data.certificates.filter(c => !c.id.startsWith(TEST_PREFIX));
+        removed += origLen - data.certificates.length;
+      }
+
+      // 清理 awards
+      if (data.awards) {
+        const origLen = data.awards.length;
+        data.awards = data.awards.filter(a => !a.id.startsWith(TEST_PREFIX));
+        removed += origLen - data.awards.length;
+      }
+
+      saveData(data);
+      
+      // 重置所有状态
+      ['profile', 'work', 'edu', 'skills', 'projects', 'courses', 'certs', 'awards'].forEach(m => {
+        setStatus(m, 'pending', '等待测试...');
+      });
+
+      loadStats();
+      alert(`✅ 已清理 ${removed} 条测试数据！`);
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // 查看数据函数
+    function viewProfileData() {
+      const data = loadData();
+      if (!data) return;
+      console.log('个人资料:', data.profile);
+      alert('已在控制台输出个人资料数据，按 F12 查看');
+    }
+
+    function viewWorkData() {
+      const data = loadData();
+      if (!data) return;
+      const work = data.experience.filter(e => e.type === 'Work');
+      console.table(work);
+      alert(`工作经验共 ${work.length} 条，已在控制台输出，按 F12 查看`);
+    }
+
+    function viewEduData() {
+      const data = loadData();
+      if (!data) return;
+      const edu = data.experience.filter(e => e.type === 'Education');
+      console.table(edu);
+      alert(`学历共 ${edu.length} 条，已在控制台输出，按 F12 查看`);
+    }
+
+    function viewSkillsData() {
+      const data = loadData();
+      if (!data) return;
+      console.table(data.skills);
+      alert(`技能共 ${data.skills.length} 条，已在控制台输出，按 F12 查看`);
+    }
+
+    function viewProjectsData() {
+      const data = loadData();
+      if (!data) return;
+      console.table(data.projects);
+      alert(`项目共 ${data.projects.length} 个，已在控制台输出，按 F12 查看`);
+    }
+
+    function viewCoursesData() {
+      const data = loadData();
+      if (!data) return;
+      console.table(data.courses || []);
+      alert(`课程共 ${(data.courses || []).length} 个，已在控制台输出，按 F12 查看`);
+    }
+
+    function viewCertsData() {
+      const data = loadData();
+      if (!data) return;
+      console.table(data.certificates || []);
+      alert(`证照共 ${(data.certificates || []).length} 个，已在控制台输出，按 F12 查看`);
+    }
+
+    function viewAwardsData() {
+      const data = loadData();
+      if (!data) return;
+      console.table(data.awards || []);
+      alert(`奖状共 ${(data.awards || []).length} 个，已在控制台输出，按 F12 查看`);
+    }
+
+    // 页面加载时执行
+    window.addEventListener('load', () => {
+      loadStats();
+    });
+  </script>
+</body>
+</html>

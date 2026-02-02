@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>数据流测试工具</title>
+  <style>
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #0a0d18;
+      color: #e0e4f0;
+    }
+    h1 { color: #4facfe; }
+    .section {
+      background: #1a1f2e;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border: 1px solid #2a3142;
+    }
+    button {
+      background: #4facfe;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover { background: #3d8dd6; }
+    pre {
+      background: #0f121a;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-size: 12px;
+    }
+    .status { 
+      padding: 10px; 
+      margin: 10px 0; 
+      border-radius: 5px; 
+    }
+    .success { background: #2d5f2d; }
+    .error { background: #5f2d2d; }
+    .warning { background: #5f4d2d; }
+  </style>
+</head>
+<body>
+  <h1>🔍 数据流诊断工具</h1>
+  
+  <div class="section">
+    <h2>1. 检查 localStorage 数据</h2>
+    <button onclick="checkLocalStorage()">检查当前数据</button>
+    <button onclick="clearLocalStorage()">清空 localStorage</button>
+    <div id="localStorage-result"></div>
+  </div>
+
+  <div class="section">
+    <h2>2. 添加测试工作经验</h2>
+    <button onclick="addTestWork()">添加测试工作</button>
+    <button onclick="addTestEducation()">添加测试学历</button>
+    <div id="add-result"></div>
+  </div>
+
+  <div class="section">
+    <h2>3. 检查前台显示</h2>
+    <button onclick="window.open('index.html', '_blank')">打开前台页面</button>
+    <p>查看前台是否显示新添加的数据</p>
+  </div>
+
+  <div class="section">
+    <h2>4. 诊断结果</h2>
+    <div id="diagnosis"></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'cvData';
+
+    function checkLocalStorage() {
+      const result = document.getElementById('localStorage-result');
+      const raw = localStorage.getItem(STORAGE_KEY);
+      
+      if (!raw) {
+        result.innerHTML = '<div class="status error">❌ localStorage 中没有 cvData</div>';
+        return;
+      }
+
+      try {
+        const data = JSON.parse(raw);
+        const workCount = data.experience?.filter(e => e.type === 'Work').length || 0;
+        const eduCount = data.experience?.filter(e => e.type === 'Education').length || 0;
+        
+        result.innerHTML = `
+          <div class="status success">✅ 找到数据！</div>
+          <p>工作经验数量: ${workCount}</p>
+          <p>学历数量: ${eduCount}</p>
+          <p>技能数量: ${data.skills?.length || 0}</p>
+          <p>项目数量: ${data.projects?.length || 0}</p>
+          <details>
+            <summary>查看完整数据（点击展开）</summary>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          </details>
+        `;
+      } catch (err) {
+        result.innerHTML = `<div class="status error">❌ 数据解析错误: ${err.message}</div>`;
+      }
+    }
+
+    function clearLocalStorage() {
+      if (confirm('确定要清空 localStorage？这将删除所有数据！')) {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem('cvTheme');
+        localStorage.removeItem('cvAdminSession');
+        document.getElementById('localStorage-result').innerHTML = 
+          '<div class="status warning">⚠️ localStorage 已清空</div>';
+      }
+    }
+
+    function addTestWork() {
+      const result = document.getElementById('add-result');
+      const raw = localStorage.getItem(STORAGE_KEY);
+      let data;
+
+      try {
+        if (!raw) {
+          result.innerHTML = '<div class="status error">❌ 请先初始化数据（访问前台或后台页面）</div>';
+          return;
+        }
+
+        data = JSON.parse(raw);
+        
+        const testWork = {
+          id: crypto.randomUUID(),
+          type: 'Work',
+          company: '测试公司 Test Corp',
+          role: '测试职位 Test Role',
+          period: '2024-2026',
+          summary: '这是一个测试工作经验，用于诊断数据流问题。如果前台能看到这条，说明数据流正常。'
+        };
+
+        if (!Array.isArray(data.experience)) {
+          data.experience = [];
+        }
+
+        data.experience.unshift(testWork);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+        result.innerHTML = `
+          <div class="status success">✅ 测试工作已添加！</div>
+          <p>ID: ${testWork.id}</p>
+          <p>现在请刷新前台页面查看是否显示</p>
+        `;
+      } catch (err) {
+        result.innerHTML = `<div class="status error">❌ 添加失败: ${err.message}</div>`;
+      }
+    }
+
+    function addTestEducation() {
+      const result = document.getElementById('add-result');
+      const raw = localStorage.getItem(STORAGE_KEY);
+      let data;
+
+      try {
+        if (!raw) {
+          result.innerHTML = '<div class="status error">❌ 请先初始化数据（访问前台或后台页面）</div>';
+          return;
+        }
+
+        data = JSON.parse(raw);
+        
+        const testEdu = {
+          id: crypto.randomUUID(),
+          type: 'Education',
+          company: '测试大学 Test University',
+          role: '测试学位 Test Degree',
+          period: '2020-2024',
+          summary: '这是一个测试学历，用于诊断数据流问题。'
+        };
+
+        if (!Array.isArray(data.experience)) {
+          data.experience = [];
+        }
+
+        data.experience.unshift(testEdu);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+        result.innerHTML = `
+          <div class="status success">✅ 测试学历已添加！</div>
+          <p>ID: ${testEdu.id}</p>
+          <p>现在请刷新前台页面查看是否显示</p>
+        `;
+      } catch (err) {
+        result.innerHTML = `<div class="status error">❌ 添加失败: ${err.message}</div>`;
+      }
+    }
+
+    // 自动执行检查
+    window.addEventListener('load', () => {
+      checkLocalStorage();
+    });
+  </script>
+</body>
+</html>

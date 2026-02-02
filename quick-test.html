@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>快速测试 - 添加并验证数据</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 600px;
+      width: 100%;
+      padding: 40px;
+    }
+    h1 {
+      color: #667eea;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    .step {
+      background: #f7f8fc;
+      border-left: 4px solid #667eea;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    .step-number {
+      background: #667eea;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin: 10px 0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .success {
+      background: #10b981;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+      margin: 15px 0;
+      display: none;
+    }
+    .success.show { display: block; }
+    .error {
+      background: #ef4444;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+      margin: 15px 0;
+      display: none;
+    }
+    .error.show { display: block; }
+    .info {
+      background: #3b82f6;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    .link-btn {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    pre {
+      background: #1f2937;
+      color: #10b981;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 12px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 数据流快速测试</h1>
+    <p class="subtitle">验证后台修改能否在前台显示</p>
+
+    <div class="step">
+      <div><span class="step-number">1</span><strong>添加测试数据</strong></div>
+      <p style="margin: 10px 0 10px 40px; color: #666; font-size: 14px;">
+        点击下方按钮，自动添加一条测试工作经验到 localStorage
+      </p>
+      <button onclick="addTestData()">🚀 添加测试数据</button>
+    </div>
+
+    <div id="success-msg" class="success"></div>
+    <div id="error-msg" class="error"></div>
+
+    <div class="step">
+      <div><span class="step-number">2</span><strong>验证前台显示</strong></div>
+      <p style="margin: 10px 0 10px 40px; color: #666; font-size: 14px;">
+        打开前台页面，查看"学歷與工作經歷"区块是否显示测试数据
+      </p>
+      <button class="link-btn" onclick="window.open('index.html', '_blank')">
+        📄 打开前台页面
+      </button>
+    </div>
+
+    <div class="info">
+      <strong>✅ 如果看到"测试公司 2024"，说明修复成功！</strong><br>
+      <small>后台的修改现在能正确显示在前台了</small>
+    </div>
+
+    <div class="step">
+      <div><span class="step-number">3</span><strong>清理测试数据</strong></div>
+      <p style="margin: 10px 0 10px 40px; color: #666; font-size: 14px;">
+        测试完成后，删除测试数据
+      </p>
+      <button onclick="removeTestData()" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+        🗑️ 删除测试数据
+      </button>
+    </div>
+
+    <details style="margin-top: 30px;">
+      <summary style="cursor: pointer; color: #667eea; font-weight: bold; padding: 10px 0;">
+        🔍 查看技术细节
+      </summary>
+      <div style="margin-top: 15px; padding: 15px; background: #f7f8fc; border-radius: 8px;">
+        <p style="margin-bottom: 10px; font-size: 14px;"><strong>修复的问题：</strong></p>
+        <ul style="margin-left: 20px; color: #666; font-size: 13px; line-height: 1.8;">
+          <li>前台不再自动从 GitHub 覆盖 localStorage</li>
+          <li>后台不再在加载时覆盖用户编辑的内容</li>
+          <li>优先使用 localStorage 中的最新数据</li>
+        </ul>
+        <p style="margin: 15px 0 5px 0; font-size: 14px;"><strong>测试数据结构：</strong></p>
+        <pre>{
+  "type": "Work",
+  "company": "测试公司 2024",
+  "role": "前端工程师",
+  "period": "2024-现在",
+  "summary": "✅ 如果你能在前台看到这条..."
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'cvData';
+    let testDataId = null;
+
+    function addTestData() {
+      const successMsg = document.getElementById('success-msg');
+      const errorMsg = document.getElementById('error-msg');
+      
+      try {
+        // 获取现有数据
+        const raw = localStorage.getItem(STORAGE_KEY);
+        let data;
+        
+        if (!raw) {
+          errorMsg.textContent = '❌ 请先访问前台页面或后台页面初始化数据';
+          errorMsg.classList.add('show');
+          successMsg.classList.remove('show');
+          return;
+        }
+
+        data = JSON.parse(raw);
+        
+        // 创建测试数据
+        testDataId = 'test-' + Date.now();
+        const testWork = {
+          id: testDataId,
+          type: 'Work',
+          company: '测试公司 2024',
+          role: '前端工程师',
+          period: '2024-现在',
+          summary: '✅ 如果你能在前台看到这条数据，说明数据流修复成功！后台的修改现在可以正确显示在前台了。'
+        };
+
+        // 添加到经验列表开头
+        if (!Array.isArray(data.experience)) {
+          data.experience = [];
+        }
+        data.experience.unshift(testWork);
+
+        // 保存
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+        successMsg.innerHTML = `
+          <strong>✅ 测试数据已添加！</strong><br>
+          <small>ID: ${testDataId}</small><br>
+          <small style="opacity: 0.9;">现在请点击"打开前台页面"按钮验证</small>
+        `;
+        successMsg.classList.add('show');
+        errorMsg.classList.remove('show');
+
+        // 输出到控制台
+        console.log('✅ 测试数据已添加:', testWork);
+        console.log('📊 当前工作经验数量:', data.experience.filter(e => e.type === 'Work').length);
+
+      } catch (err) {
+        errorMsg.textContent = '❌ 添加失败: ' + err.message;
+        errorMsg.classList.add('show');
+        successMsg.classList.remove('show');
+        console.error('添加测试数据失败:', err);
+      }
+    }
+
+    function removeTestData() {
+      const successMsg = document.getElementById('success-msg');
+      const errorMsg = document.getElementById('error-msg');
+      
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          errorMsg.textContent = '❌ 没有找到数据';
+          errorMsg.classList.add('show');
+          successMsg.classList.remove('show');
+          return;
+        }
+
+        const data = JSON.parse(raw);
+        
+        // 移除所有测试数据
+        const originalLength = data.experience.length;
+        data.experience = data.experience.filter(e => !e.id.toString().startsWith('test-'));
+        const removed = originalLength - data.experience.length;
+
+        // 保存
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+        successMsg.innerHTML = `
+          <strong>✅ 测试数据已删除</strong><br>
+          <small>移除了 ${removed} 条测试数据</small>
+        `;
+        successMsg.classList.add('show');
+        errorMsg.classList.remove('show');
+
+        console.log('✅ 已删除测试数据，剩余工作经验:', data.experience.filter(e => e.type === 'Work').length);
+
+      } catch (err) {
+        errorMsg.textContent = '❌ 删除失败: ' + err.message;
+        errorMsg.classList.add('show');
+        successMsg.classList.remove('show');
+        console.error('删除测试数据失败:', err);
+      }
+    }
+
+    // 页面加载时检查状态
+    window.addEventListener('load', () => {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        document.getElementById('error-msg').textContent = 
+          '⚠️ 尚未初始化数据。请先访问 index.html 或 admin.html';
+        document.getElementById('error-msg').classList.add('show');
+      } else {
+        const data = JSON.parse(raw);
+        const workCount = data.experience?.filter(e => e.type === 'Work').length || 0;
+        console.log('📊 当前数据状态:', {
+          工作经验: workCount,
+          学历: data.experience?.filter(e => e.type === 'Education').length || 0,
+          技能: data.skills?.length || 0
+        });
+      }
+    });
+  </script>
+</body>
+</html>

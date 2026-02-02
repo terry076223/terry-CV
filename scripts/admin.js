@@ -362,6 +362,7 @@ function deleteAward(id) {
   data.awards = (data.awards || []).filter(i => i.id !== id);
   saveData(data);
   refreshUI();
+  alert('已儲存成功，前台已更新！');
 }
 
 function upsertProj(event) {
@@ -398,6 +399,8 @@ function deleteProj(id) {
   const data = loadData();
   data.projects = data.projects.filter(i => i.id !== id);
   saveData(data);
+  refreshUI();
+  alert('已儲存成功，前台已更新！');
   refreshUI();
 }
 
@@ -588,6 +591,7 @@ function handleProfileSubmit(event) {
   
   saveData(data);
   refreshUI();
+  alert('個人資料已儲存成功，前台已更新！');
 }
 
 function preloadProfileForm() {
@@ -939,19 +943,23 @@ async function checkTokenStatus() {
 
 async function syncDataFromGitHub() {
   try {
-    // 如果有設定 Token，試著從 GitHub 載入最新資料
-    const gitHubData = await loadDataFromGitHub();
-    if (gitHubData) {
-      // 用 GitHub 資料取代 localStorage
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
-      console.log('✅ Synced data from GitHub');
-      // 重新整理 UI
-      refreshUI();
-      preloadProfileForm();
+    // 后台不应该自动同步 GitHub 数据，避免覆盖用户正在编辑的内容
+    // 只在 localStorage 为空时才载入 GitHub 数据
+    const localData = localStorage.getItem(STORAGE_KEY);
+    if (!localData) {
+      const gitHubData = await loadDataFromGitHub();
+      if (gitHubData) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(gitHubData));
+        console.log('✅ Initial load: Synced data from GitHub');
+        refreshUI();
+        preloadProfileForm();
+      }
+    } else {
+      console.log('✅ Using existing localStorage data (skip GitHub sync to preserve edits)');
     }
   } catch (err) {
     console.warn('GitHub sync skipped:', err.message);
-    // 失敗時使用 localStorage 的資料，不中斷使用者操作
+    // 失败时使用 localStorage 的资料，不中断用户操作
   }
 }
 
