@@ -148,11 +148,17 @@ function migrateProfileFields(data) {
   if (!data.profile.aboutDescription) data.profile.aboutDescription = '';
 }
 
+// Helper function to convert newlines to <br> tags for proper line break display
+function formatLineBreaks(text) {
+  if (!text) return '';
+  return text.replace(/\n/g, '<br>');
+}
+
 function renderProfile(data) {
   const { profile } = data;
   document.getElementById('hero-name').textContent = profile.name;
   document.getElementById('hero-title').textContent = profile.title;
-  document.getElementById('hero-intro').textContent = profile.heroDescription;
+  document.getElementById('hero-intro').innerHTML = formatLineBreaks(profile.heroDescription);
   const footerName = document.getElementById('footer-name');
   if (footerName) {
     footerName.textContent = `© ${new Date().getFullYear()} ${profile.name || ''}`.trim();
@@ -192,7 +198,7 @@ function renderProfile(data) {
     const content = profile.aboutDescription || profile.heroDescription;
     about.innerHTML = `
       <h3>${profile.title}</h3>
-      <p>${content}</p>
+      <p>${formatLineBreaks(content)}</p>
       <div class="links">
         ${profile.links.map(link => `<a href="${link.href}" target="_blank"><i class="${link.icon}"></i> ${link.label}</a>`).join('')}
       </div>
@@ -258,7 +264,7 @@ function renderExperience(data) {
       <div class="badge">工作</div>
       <h3>${item.company} — ${item.role}</h3>
       <p class="text-muted">${item.period}</p>
-      <p>${item.summary}</p>
+      <p>${formatLineBreaks(item.summary)}</p>
       <span class="connector"></span>
     `;
     if (workWrap) workWrap.appendChild(div);
@@ -272,7 +278,7 @@ function renderExperience(data) {
       <div class="badge">學歷</div>
       <h3>${item.company} — ${item.role}</h3>
       <p class="text-muted">${item.period}</p>
-      <p>${item.summary}</p>
+      <p>${formatLineBreaks(item.summary)}</p>
       <span class="connector"></span>
     `;
     if (eduWrap) eduWrap.appendChild(div);
@@ -305,7 +311,7 @@ function renderGrouped(list, targetId, badgeLabel) {
         <img src="${photoSrc}" class="award-photo" />
         <h3>${item.name}</h3>
         <p class="text-muted">${item.issuer || ''}${item.year ? ' · ' + item.year : ''}</p>
-        <p>${item.desc || ''}</p>
+        <p>${formatLineBreaks(item.desc || '')}</p>
         ${linkHtml}
       `;
     } else {
@@ -315,7 +321,7 @@ function renderGrouped(list, targetId, badgeLabel) {
         <div class="badge">${badgeLabel}</div>
         <h3>${item.name}</h3>
         <p class="text-muted">${item.issuer || ''}${item.year ? ' · ' + item.year : ''}</p>
-        <p>${item.desc || ''}</p>
+        <p>${formatLineBreaks(item.desc || '')}</p>
         ${linkHtml}
       `;
     }
@@ -332,7 +338,7 @@ function renderProjects(data) {
     const linkHtml = item.link ? `<a class="btn ghost" href="${item.link}" target="_blank">前往</a>` : '';
     card.innerHTML = `
       <h3>${item.name}</h3>
-      <p>${item.desc}</p>
+      <p>${formatLineBreaks(item.desc)}</p>
       <div class="tags">${item.tech.split('/').map(tag => `<span>${tag.trim()}</span>`).join('')}</div>
       ${linkHtml}
     `;
