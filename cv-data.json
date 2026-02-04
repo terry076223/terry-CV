@@ -87,6 +87,14 @@
   ],
   "experience": [
     {
+      "id": "47f84254-1310-4f93-972a-3984648750c5",
+      "type": "Education",
+      "company": "私立正心高級中學",
+      "role": "高中",
+      "period": "2005/09~2008/06",
+      "summary": ""
+    },
+    {
       "id": "1f573967-a7e3-4b88-87e7-7bc6c442676c",
       "type": "Education",
       "company": "私立正心高級中學",
