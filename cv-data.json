@@ -87,6 +87,14 @@
   ],
   "experience": [
     {
+      "id": "0105d3b7-ce27-4396-878d-f14b30571684",
+      "type": "Education",
+      "company": "東海大學",
+      "role": "碩士",
+      "period": "最高學歷 2013/09~2015/06",
+      "summary": "統計建模能力"
+    },
+    {
       "id": "549e31b5-df70-47ef-96da-59da2189cca5",
       "type": "Education",
       "company": "東海大學",
