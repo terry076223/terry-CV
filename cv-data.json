@@ -87,6 +87,14 @@
   ],
   "experience": [
     {
+      "id": "549e31b5-df70-47ef-96da-59da2189cca5",
+      "type": "Education",
+      "company": "東海大學",
+      "role": "學士",
+      "period": "2008/09~2013/06",
+      "summary": "統計理論，資料分析學習"
+    },
+    {
       "id": "47f84254-1310-4f93-972a-3984648750c5",
       "type": "Education",
       "company": "私立正心高級中學",
