@@ -87,14 +87,6 @@
   ],
   "experience": [
     {
-      "id": "64780e79-2dc7-4fe4-aa77-bc8180c77a76",
-      "type": "Education",
-      "company": "東海大學統計系",
-      "role": "學士",
-      "period": "2008/09 2013/06",
-      "summary": "統計理論與應用、資料分析方法。"
-    },
-    {
       "id": "d78edf46-759d-4eb9-80a1-c21870306728",
       "type": "Work",
       "company": "中山醫學大學",
