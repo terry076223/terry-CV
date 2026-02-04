@@ -83,6 +83,20 @@
           "level": "進階"
         }
       ]
+    },
+    {
+      "id": "913d3efe-b066-4e4c-a0e1-87d35572d8b8",
+      "name": "數據視覺化",
+      "items": [
+        {
+          "name": "Tableau",
+          "level": "熟練"
+        },
+        {
+          "name": "Power BI",
+          "level": "進階"
+        }
+      ]
     }
   ],
   "experience": [
