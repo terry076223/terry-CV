@@ -87,6 +87,14 @@
   ],
   "experience": [
     {
+      "id": "1f573967-a7e3-4b88-87e7-7bc6c442676c",
+      "type": "Education",
+      "company": "私立正心高級中學",
+      "role": "國中",
+      "period": "2002/09~2005/06",
+      "summary": ""
+    },
+    {
       "id": "d78edf46-759d-4eb9-80a1-c21870306728",
       "type": "Work",
       "company": "中山醫學大學",
