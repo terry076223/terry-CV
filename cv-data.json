@@ -97,6 +97,24 @@
           "level": "進階"
         }
       ]
+    },
+    {
+      "id": "4b675501-f4ea-472e-aa33-f8a4656ed807",
+      "name": "AI工具",
+      "items": [
+        {
+          "name": "Vibi Coding",
+          "level": "進階"
+        },
+        {
+          "name": "GPT使用",
+          "level": "進階"
+        },
+        {
+          "name": "copulit",
+          "level": "進階"
+        }
+      ]
     }
   ],
   "experience": [
