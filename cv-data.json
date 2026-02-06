@@ -115,6 +115,24 @@
           "level": "進階"
         }
       ]
+    },
+    {
+      "id": "065e255d-70e9-48db-857a-3d3d38421d7d",
+      "name": "AI技能",
+      "items": [
+        {
+          "name": "語音轉文字",
+          "level": "進階"
+        },
+        {
+          "name": "Langhchain",
+          "level": "進階"
+        },
+        {
+          "name": "RAG",
+          "level": "進階"
+        }
+      ]
     }
   ],
   "experience": [
