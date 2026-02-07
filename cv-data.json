@@ -262,6 +262,13 @@
   ],
   "projects": [
     {
+      "id": "3cac32e7-2bd1-4e55-8870-aab28a19a967",
+      "name": "影像辨識",
+      "tech": "python",
+      "link": "",
+      "desc": "辨識自己家人功能開發試做"
+    },
+    {
       "id": "c4015bf9-a85a-433c-b86e-63b34bae360a",
       "name": "tableau 數據儀表板開發",
       "tech": "tableau",
