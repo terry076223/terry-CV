@@ -262,6 +262,13 @@
   ],
   "projects": [
     {
+      "id": "10d831ff-805e-474d-83af-c47c8246706f",
+      "name": "AI RAG試做",
+      "tech": "python/sql",
+      "link": "",
+      "desc": "可以詢問台灣不同年代的歌手和歌詞。可以給他猜歌。回復"
+    },
+    {
       "id": "e6f8b911-afb1-4bac-a916-db47bcd4f00c",
       "name": "AI Languchain",
       "tech": "python",
