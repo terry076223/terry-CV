@@ -262,6 +262,13 @@
   ],
   "projects": [
     {
+      "id": "e6f8b911-afb1-4bac-a916-db47bcd4f00c",
+      "name": "AI Languchain",
+      "tech": "python",
+      "link": "",
+      "desc": "文章整理"
+    },
+    {
       "id": "3cac32e7-2bd1-4e55-8870-aab28a19a967",
       "name": "影像辨識",
       "tech": "python",
