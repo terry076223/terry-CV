@@ -260,5 +260,13 @@
       "photoPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1769839374098-S__6275105.jpg"
     }
   ],
-  "projects": []
+  "projects": [
+    {
+      "id": "3d51466a-d86b-414c-b873-f650389b11d7",
+      "name": "政府公開招標網站自動化爬蟲",
+      "tech": "python",
+      "link": "",
+      "desc": "協助業務單位，每日抓取政府公開招標網站，並做關鍵字整理，開拓公司商機，成功獲取台北市銀髮族計畫。"
+    }
+  ]
 }
