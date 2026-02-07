@@ -161,20 +161,20 @@
       "name": "SQL",
       "items": [
         {
-          "name": "MySQL｜入門",
-          "level": ""
+          "name": "MySQL",
+          "level": "入門"
         },
         {
-          "name": "PostgreSQL｜入門",
-          "level": ""
+          "name": "PostgreSQL",
+          "level": "入門"
         },
         {
-          "name": "SQL 查詢與優化｜入門",
-          "level": ""
+          "name": "SQL 查詢與優化",
+          "level": "入門"
         },
         {
-          "name": "Schema 設計｜入門",
-          "level": ""
+          "name": "Schema 設計",
+          "level": "入門"
         }
       ]
     }
