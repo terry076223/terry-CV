@@ -133,6 +133,28 @@
           "level": "進階"
         }
       ]
+    },
+    {
+      "id": "368dca11-b589-4873-9a5d-e2c33d6b38d1",
+      "name": "工程與協作基礎",
+      "items": [
+        {
+          "name": "Git",
+          "level": "入門"
+        },
+        {
+          "name": "GitHub / GitLab 協作",
+          "level": "入門"
+        },
+        {
+          "name": "Linux",
+          "level": "入門"
+        },
+        {
+          "name": "Docker",
+          "level": "入門"
+        }
+      ]
     }
   ],
   "experience": [
