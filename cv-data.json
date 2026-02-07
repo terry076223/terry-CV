@@ -155,6 +155,28 @@
           "level": "入門"
         }
       ]
+    },
+    {
+      "id": "016380f3-4903-4765-9ec4-44f86148452b",
+      "name": "SQL",
+      "items": [
+        {
+          "name": "MySQL｜入門",
+          "level": ""
+        },
+        {
+          "name": "PostgreSQL｜入門",
+          "level": ""
+        },
+        {
+          "name": "SQL 查詢與優化｜入門",
+          "level": ""
+        },
+        {
+          "name": "Schema 設計｜入門",
+          "level": ""
+        }
+      ]
     }
   ],
   "experience": [
