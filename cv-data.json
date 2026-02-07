@@ -262,6 +262,13 @@
   ],
   "projects": [
     {
+      "id": "c4015bf9-a85a-433c-b86e-63b34bae360a",
+      "name": "tableau 數據儀表板開發",
+      "tech": "tableau",
+      "link": "",
+      "desc": "數據儀表板使用"
+    },
+    {
       "id": "11541f50-a17e-4a95-a8f4-ab383f2ac80e",
       "name": "語音轉文字",
       "tech": "python",
