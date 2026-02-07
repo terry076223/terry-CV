@@ -262,6 +262,13 @@
   ],
   "projects": [
     {
+      "id": "11541f50-a17e-4a95-a8f4-ab383f2ac80e",
+      "name": "語音轉文字",
+      "tech": "python",
+      "link": "",
+      "desc": "將語音切塊轉入withsper，在將內容組合"
+    },
+    {
       "id": "3d51466a-d86b-414c-b873-f650389b11d7",
       "name": "商機自動監測",
       "tech": "python/Linux 部屬",
