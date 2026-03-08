@@ -316,6 +316,15 @@
   "certificates": [],
   "awards": [
     {
+      "id": "9cafaacc-0433-44f8-b755-8b541e4ded2e",
+      "name": "第一屆半導體大數據分析競賽",
+      "issuer": "台積電",
+      "year": "2015",
+      "link": "",
+      "desc": "參與課程訓練以及初賽證明",
+      "photoPath": ""
+    },
+    {
       "id": "6990cf95-b895-4757-a7a3-147391df737c",
       "name": "SAS 校園大使",
       "issuer": "SAS",
