@@ -250,6 +250,15 @@
   "achievements": [],
   "courses": [
     {
+      "id": "222c7321-3247-4d18-ae82-a0fa170640dc",
+      "name": "postman",
+      "issuer": "udemy",
+      "year": "2025",
+      "link": "",
+      "desc": "學習postman 基礎設定",
+      "photoPath": ""
+    },
+    {
       "id": "e03bc5c9-8b19-4b92-a112-bec797a4735c",
       "name": "DOCKER",
       "issuer": "UDEMY",
