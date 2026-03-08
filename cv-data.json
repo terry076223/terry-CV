@@ -316,6 +316,15 @@
   "certificates": [],
   "awards": [
     {
+      "id": "f5180d4a-fbea-48c0-adf9-2007002fa82d",
+      "name": "AI競賽",
+      "issuer": "精誠集團",
+      "year": "2024",
+      "link": "",
+      "desc": "參與集團舉辦的內部AI競賽，獲第9名",
+      "photoPath": ""
+    },
+    {
       "id": "41cba08c-4c20-44aa-8ac9-6653655e036e",
       "name": "第一屆半導體大數據分析競賽",
       "issuer": "台積電",
