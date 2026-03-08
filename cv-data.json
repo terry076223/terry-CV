@@ -248,17 +248,7 @@
     }
   ],
   "achievements": [],
-  "courses": [
-    {
-      "id": "c8eec52c-a4c5-4266-ac92-90853ed05864",
-      "name": "SAS校園大使",
-      "issuer": "SAS",
-      "year": "2014",
-      "link": "",
-      "desc": "協助SAS校園推廣",
-      "photoPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1772937009418-SAS____.png"
-    }
-  ],
+  "courses": [],
   "certificates": [],
   "awards": [
     {
