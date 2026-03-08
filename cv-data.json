@@ -252,6 +252,15 @@
   "certificates": [],
   "awards": [
     {
+      "id": "a3b44646-cdca-46aa-afb1-df61dd0710f6",
+      "name": "SAS 校園大使",
+      "issuer": "SAS",
+      "year": "2014",
+      "link": "",
+      "desc": "協助SAS在學校推廣SAS軟體",
+      "photoPath": ""
+    },
+    {
       "id": "6990cf95-b895-4757-a7a3-147391df737c",
       "name": "SAS 校園大使",
       "issuer": "SAS",
