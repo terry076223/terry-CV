@@ -250,6 +250,15 @@
   "achievements": [],
   "courses": [
     {
+      "id": "1bc826ec-6181-4734-8df3-4132510b87a0",
+      "name": "網路爬蟲課程",
+      "issuer": "職訓局",
+      "year": "2026",
+      "link": "",
+      "desc": "",
+      "photoPath": ""
+    },
+    {
       "id": "05f4c511-5bb4-42b2-9f14-f960766b517f",
       "name": "影像辨識課程",
       "issuer": "職訓局",
