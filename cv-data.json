@@ -250,6 +250,15 @@
   "achievements": [],
   "courses": [
     {
+      "id": "50b0c542-884c-41b7-b26a-44477b98155b",
+      "name": "全端工程師",
+      "issuer": "職訓局",
+      "year": "2025",
+      "link": "",
+      "desc": "全端架構",
+      "photoPath": ""
+    },
+    {
       "id": "b1d937b6-a441-446e-b0d0-59beed42d081",
       "name": "AI langhchain",
       "issuer": "職訓局",
