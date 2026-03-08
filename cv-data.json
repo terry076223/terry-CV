@@ -252,6 +252,15 @@
   "certificates": [],
   "awards": [
     {
+      "id": "8c7fc7bc-1710-4a19-9cba-57bf1afcd7fd",
+      "name": "第三屆高速公路ETC資料再交通管理之應用創意競賽-ETC資料視覺化應用",
+      "issuer": "公路局",
+      "year": "2017",
+      "link": "",
+      "desc": "參加競賽第二名",
+      "photoPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1772936326913-tableau__.jpg"
+    },
+    {
       "id": "95dec5ba-bd25-4c36-bb52-2f4db9cfefaf",
       "name": "AAA",
       "issuer": "AAA",
