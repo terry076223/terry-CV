@@ -316,6 +316,15 @@
   "certificates": [],
   "awards": [
     {
+      "id": "41cba08c-4c20-44aa-8ac9-6653655e036e",
+      "name": "第一屆半導體大數據分析競賽",
+      "issuer": "台積電",
+      "year": "2015",
+      "link": "",
+      "desc": "參與課程訓練以及初賽證明",
+      "photoPath": "https://cdn.jsdelivr.net/gh/terry076223/terry-CV@main/assets/images/1772940211029-__________.png"
+    },
+    {
       "id": "9cafaacc-0433-44f8-b755-8b541e4ded2e",
       "name": "第一屆半導體大數據分析競賽",
       "issuer": "台積電",
