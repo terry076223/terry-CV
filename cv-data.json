@@ -250,6 +250,15 @@
   "achievements": [],
   "courses": [
     {
+      "id": "bd4ce11b-6446-44c4-93cb-182d53076d75",
+      "name": "Machine Learning Practical",
+      "issuer": "udemy",
+      "year": "2024",
+      "link": "",
+      "desc": "",
+      "photoPath": ""
+    },
+    {
       "id": "222c7321-3247-4d18-ae82-a0fa170640dc",
       "name": "postman",
       "issuer": "udemy",
